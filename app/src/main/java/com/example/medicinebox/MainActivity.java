@@ -66,21 +66,65 @@ public class MainActivity extends AppCompatActivity {
                 user.put("last", "Lovelace");
                 user.put("born", 1815);
 
+//                // firestore 컬렉션 선택
+//                db.collection("users")
+//                    .add(user)
+//                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {          // 데이터 넣기 성공시
+//                        @Override
+//                        public void onSuccess(DocumentReference documentReference) {
+//                            Log.d("firestore", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {                             // 데이터 넣기 실패시
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.w("firestore", "Error adding document", e);
+//                        }
+//                    });
                 // firestore 컬렉션 선택
-                db.collection("users")
-                        .add(user)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {          // 데이터 넣기 성공시
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d("firestore", "DocumentSnapshot added with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {                             // 데이터 넣기 실패시
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("firestore", "Error adding document", e);
-                            }
-                        });
+//                db.collection("users").document("user1")
+//                        .set(user)
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                 Log.d("firestore", "DocumentSnapshot successfully written!");
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Log.d("firestore", "Error writing document", e);
+//                            }
+//                        })
+            }
+        });
+
+        imgbtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create a new user with a first, middle, and last name
+                Map<String, Object> user = new HashMap<>();
+                user.put("first", "Alan");
+                user.put("middle", "Mathison");
+                user.put("last", "Turing");
+                user.put("born", 1912);
+
+                // Add a new document with a generated ID
+//                db.collection("users").document()
+//                    .add(user)
+//                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                        @Override
+//                        public void onSuccess(DocumentReference documentReference) {
+//                            Log.d("firebase", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.w("firebase", "Error adding document", e);
+//                        }
+//                    });
+
             }
         });
 
