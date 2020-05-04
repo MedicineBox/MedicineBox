@@ -39,35 +39,6 @@ public class LoginActivity extends Activity {
         btnRegister = findViewById(R.id.login_btn_register);
 
 
-        ClearEditText clearEditText1 = new ClearEditText(edtId.getContext());
-//        clearEditText1.addTextChangedListener();
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideKeyboard();
-            }
-        }, 100);
-
-
-
-        edtId.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
 //        id EditText 터치 시
         edtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {                   // 포커스 이동
