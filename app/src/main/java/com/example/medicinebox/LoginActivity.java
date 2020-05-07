@@ -102,7 +102,8 @@ public class LoginActivity extends Activity {
                 //서버에서 확인해야함
                 flag = true;    // 일단 확인했다 치고
                 if(flag) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);            // MainActivity로 이동
+                    Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
 //                    intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
                     startActivity(intent);
                     LoginActivity.this.finish();

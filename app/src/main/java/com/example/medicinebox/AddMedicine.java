@@ -1,6 +1,5 @@
 package com.example.medicinebox;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
@@ -79,7 +78,7 @@ public class AddMedicine extends AppCompatActivity {
         btnDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setBackgroundResource(R.drawable.button_select_day);
+                v.setBackgroundResource(R.drawable.button_select);
                 btnDay.setTextColor(Color.WHITE);
                 btnCycle.setBackgroundResource(R.drawable.button);
                 btnCycle.setTextColor(Color.BLACK);
@@ -91,7 +90,7 @@ public class AddMedicine extends AppCompatActivity {
         btnCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setBackgroundResource(R.drawable.button_select_day);
+                v.setBackgroundResource(R.drawable.button_select);
                 btnCycle.setTextColor(Color.WHITE);
                 btnDay.setBackgroundResource(R.drawable.button);
                 btnDay.setTextColor(Color.BLACK);
@@ -133,7 +132,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(daySunVal == 0) {
                     daySunVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDaySun.setTextColor(Color.WHITE);
                 } else if(daySunVal == 1) {
                     daySunVal = 0;
@@ -147,7 +146,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(dayMonVal == 0) {
                     dayMonVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDayMon.setTextColor(Color.WHITE);
                 } else if(dayMonVal == 1) {
                     dayMonVal = 0;
@@ -161,7 +160,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(dayTueVal == 0) {
                     dayTueVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDayTue.setTextColor(Color.WHITE);
                 } else if(dayTueVal == 1) {
                     dayTueVal = 0;
@@ -175,7 +174,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(dayWedVal == 0) {
                     dayWedVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDayWed.setTextColor(Color.WHITE);
                 } else if(dayWedVal == 1) {
                     dayWedVal = 0;
@@ -189,7 +188,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(dayThuVal == 0) {
                     dayThuVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDayThu.setTextColor(Color.WHITE);
                 } else if(dayThuVal == 1) {
                     dayThuVal = 0;
@@ -203,7 +202,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(dayFriVal == 0) {
                     dayFriVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDayFri.setTextColor(Color.WHITE);
                 } else if(dayFriVal == 1) {
                     dayFriVal = 0;
@@ -217,7 +216,7 @@ public class AddMedicine extends AppCompatActivity {
             public void onClick(View v) {
                 if(daySatVal == 0) {
                     daySatVal = 1;
-                    v.setBackgroundResource(R.drawable.button_select_day);
+                    v.setBackgroundResource(R.drawable.button_select);
                     btnDaySat.setTextColor(Color.WHITE);
                 } else if(daySatVal == 1) {
                     daySatVal = 0;

@@ -14,4 +14,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="progressbar_color">
+        <item name="colorAccent">@color/signature</item>
+    </style>
 </resources>

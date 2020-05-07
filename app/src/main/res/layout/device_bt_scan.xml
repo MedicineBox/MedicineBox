@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/auth_tvBtScanMain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="디바이스 선택"
+        android:textSize="30dp"
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+
+        android:layout_marginTop="60dp"
+        />
+
+    <TextView
+        android:id="@+id/auth_tvBtScanSub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="디바이스와 휴대폰을 가까이 하세요."
+        app:layout_constraintStart_toStartOf="@id/auth_tvBtScanMain"
+        app:layout_constraintTop_toBottomOf="@id/auth_tvBtScanMain"
+        android:layout_marginTop="20dp"
+        />
+
+
+    <ListView
+        android:id="@+id/auth_listBtScan"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/auth_tvBtScanMain"
+        app:layout_constraintEnd_toEndOf="@id/auth_tvBtScanMain"
+        app:layout_constraintTop_toTopOf="@id/auth_tvBtScanSub"
+        app:layout_constraintTop_toBottomOf="@id/auth_btnScan"
+        app:layout_constraintHeight_percent="0.6"
+        android:layout_marginTop="70dp"
+        />
+
+    <Button
+        android:id="@+id/auth_btnScan"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="다음"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        android:background="@drawable/button_select"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        android:layout_marginBottom="20dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
