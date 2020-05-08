@@ -19,7 +19,7 @@ public class Splash extends Activity {
     }
 
 
-    private class splashhandler implements Runnable  {
+    public class splashhandler implements Runnable  {
         public void run() {
             startActivity(new Intent(getApplication(), LoginActivity.class));           // 로딩이 끝난 후 loginActivity로 이동
             Splash.this.finish();                                                       // 로딩페이지를 activity stack에서 제거

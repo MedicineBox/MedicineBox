@@ -45,7 +45,7 @@
             android:id="@+id/imgbtnSearch"
             android:layout_width="30sp"
             android:layout_height="30sp"
-            android:src="@drawable/search2"
+            android:src="@drawable/search"
             android:scaleType="fitCenter"
             android:background="#ddd"
             android:layout_marginBottom="10sp"

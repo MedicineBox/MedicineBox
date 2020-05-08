@@ -37,17 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainactivity);
-
-        bottomBar = (View) findViewById(R.id.bottomBar_main);
-        bHome = (LinearLayout) bottomBar.findViewById(R.id.layoutHome);
-        bSearch = (LinearLayout) bottomBar.findViewById(R.id.layoutSearch);
-        bSetting = (LinearLayout) bottomBar.findViewById(R.id.layoutSetting);
-        bBtnHome = (ImageButton) bottomBar.findViewById(R.id.imgbtnHome);
-        bBtnSearch = (ImageButton) bottomBar.findViewById(R.id.imgbtnSearch);
-        bBtnSetting = (ImageButton) bottomBar.findViewById(R.id.imgbtnSetting);
-        ImageButton imgbtnPill1 = (ImageButton)findViewById(R.id.mainPill1);
-        ImageButton imgbtn1 = (ImageButton) findViewById(R.id.imgbtn1);
-        ImageButton imgbtn2 = (ImageButton) findViewById(R.id.imgbtn2);
+/*
 
         imgbtnPill1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+*/
 
-        imgbtn1.setOnClickListener(new View.OnClickListener() {
+ /*       imgbtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -98,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
 //                        })
             }
         });
-
-        imgbtn2.setOnClickListener(new View.OnClickListener() {
+*/
+ /*       imgbtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create a new user with a first, middle, and last name
@@ -127,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+*/
 
 
 //        하단 바 버튼 클릭
-        bBtnHome.setOnClickListener(new View.OnClickListener() {
+  /*      bBtnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Home 클릭", Toast.LENGTH_SHORT).show();
@@ -168,6 +159,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Setting 클릭", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 }

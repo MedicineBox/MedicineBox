@@ -73,15 +73,13 @@ public class Device_auth extends Activity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);                      // 다른 액티비티를 통해서 블루투스를 활성화 한 후에 결과를 requestCode 변수로 리턴
         }
 
-// aaaaa
+
         Intent getIntent = getIntent();
         String wifi = getIntent.getStringExtra("wifi");
         String passwd = getIntent.getStringExtra("passwd");
         String macAddresss = getIntent.getStringExtra("macAddress");
 
         Toast.makeText(getApplicationContext(), "Wi-Fi : " + wifi + "\nPASSWORD : " + passwd +"\nMACAddr : " + macAddresss, Toast.LENGTH_SHORT).show();
-
-
 
     }
 }

@@ -1,303 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="#fff"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="10"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginBottom="10dp"
-        >
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:src="@drawable/user"
-            />
+        android:layout_height="wrap_content"
+        android:background="@color/signature"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/logo" />
+
         <TextView
+            android:id="@+id/logoTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Medicine Box"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/settingBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="75dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/setting" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/searchTxt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:ems="10"
+            android:hint="의약품명을 입력하세요."
+            android:inputType="textPersonName"
+            android:shadowColor="@color/signature"
+            android:textColorHighlight="@color/signature"
+            android:textColorLink="@color/signature" />
+
+        <ImageView
+            android:id="@+id/searchBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/search" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/slot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User1"
-            android:textSize="30sp"
-            android:textColor="#000"
-            android:layout_marginTop="10dp"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="9"
-        >
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:stretchColumns="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="#fff"
-            >
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
-                android:background="#ddd"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                <ImageButton
-                    android:id="@+id/mainPill1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="15sp"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/pill1"
-                    />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/slot" />
 
-                    <ImageButton
-                        android:id="@+id/imgbtn1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="15sp"
-                        android:layout_weight="1"
-                        android:background="#fff"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/plus"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                <ImageButton
-                    android:id="@+id/imgbtn2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:layout_margin="15sp"
-                    android:src="@drawable/plus"
-                    />
-                </LinearLayout>
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
-                android:background="#ddd">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:layout_margin="15dp"
-                    android:src="@drawable/plus"
-                    />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/pill2"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:layout_margin="15dp"
-                    />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:scaleType="fitCenter"
-                    android:layout_margin="15sp"
-                    android:src="@drawable/plus"
-                    />
-                </LinearLayout>
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#ddd">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                    <ImageButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#fff"
-                        android:scaleType="fitCenter"
-                        android:layout_margin="15sp"
-                        android:src="@drawable/ointment"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                    <ImageButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/capsules"
-                        android:background="#fff"
-                        android:scaleType="fitCenter"
-                        android:layout_margin="15sp"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                    <ImageButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#fff"
-                        android:scaleType="fitCenter"
-                        android:layout_margin="15sp"
-                        android:src="@drawable/syrup"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:layout_margin="2dp"
-                    android:background="#fff"
-                    >
-                    <ImageButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#fff"
-                        android:scaleType="fitCenter"
-                        android:layout_margin="15sp"
-                        android:src="@drawable/plus"
-                        />
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="12"
-        android:orientation="horizontal"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:gravity="center_vertical"
-        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <ImageButton
-            android:layout_width="65sp"
-            android:layout_height="65sp"
-            android:background="#fff"
-            android:layout_weight="1"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="5sp"
-            android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:src="@drawable/drug"
-            />
-        <ImageButton
-            android:layout_width="65sp"
-            android:layout_height="65sp"
-            android:background="#fff"
-            android:layout_weight="1"
-            android:layout_marginLeft="5sp"
-            android:layout_marginRight="5sp"
-            android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:src="@drawable/trash"
-            />
-        <ImageButton
-            android:layout_width="65sp"
-            android:layout_height="65sp"
-            android:background="#fff"
-            android:layout_weight="1"
-            android:layout_marginLeft="5sp"
-            android:layout_marginRight="10sp"
-            android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:src="@drawable/search"
-            />
+            <ImageView
+                android:id="@+id/takeBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/drug" />
 
+            <ImageView
+                android:id="@+id/trashBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                app:srcCompat="@drawable/trash" />
+
+        </LinearLayout>
     </LinearLayout>
-    <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="100sp"
-        android:orientation="horizontal"
-        >
-        <include layout="@layout/bottom_bar"
-            android:id="@+id/bottomBar_main"
-            />
-    </LinearLayout>
+        android:layout_height="wrap_content" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/signature"
+        android:clickable="true"
+        android:src="@drawable/plus" />
+
 </LinearLayout>
