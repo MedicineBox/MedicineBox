@@ -60,9 +60,9 @@ public class Device_auth extends Activity {
 
 
 //        시작시엔 스텝 2, 3, 4 숨기기
-//        step2.setVisibility(View.INVISIBLE);
-//        step3.setVisibility(View.INVISIBLE);
-//        step4.setVisibility(View.INVISIBLE);
+        step2.setVisibility(View.INVISIBLE);
+        step3.setVisibility(View.INVISIBLE);
+        step4.setVisibility(View.INVISIBLE);
 
 //        BLUETOOTH 설정
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);

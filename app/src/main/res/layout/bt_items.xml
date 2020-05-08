@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/selector_listview_item"
+    android:orientation="vertical"
+    >
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/btItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="111"
+        android:textColor="#000"
+        android:textSize="20sp" />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/btItemAddr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="222"
+        android:textColor="#000"
+        android:textSize="10sp" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
