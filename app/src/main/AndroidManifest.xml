@@ -21,14 +21,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
-
+        <activity android:name=".StoreActivity"></activity>
+        <activity android:name=".SearchSelect" />
+        <activity android:name=".SearchActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity
             android:name=".AddMedicine"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".SearchMain" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
