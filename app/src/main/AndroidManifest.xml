@@ -21,16 +21,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         >
         <activity android:name=".MainActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
-            >
+            android:theme="@style/Theme.Design.Light.NoActionBar">
         </activity>
         <activity android:name=".AddMedicine"
-            android:parentActivityName=".MainActivity"
-            />
-        <activity android:name=".SearchMain"
-            />
-        <activity android:name=".Splash"
-            >
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,14 +33,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
-            />
-        <activity android:name=".Device_auth_wifi"
-            />
-        <activity android:name=".Device_auth"
-            />
-        <activity android:name=".Device_ble_scan"
-            />
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity android:name=".Device_auth_wifi" />
+        <activity android:name=".Device_auth" />
+        <activity android:name=".Device_ble_scan" />
+        <activity android:name=".Splash_auth" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchSelect" />
+        <activity android:name=".StoreActivity" />
     </application>
 
 </manifest>
