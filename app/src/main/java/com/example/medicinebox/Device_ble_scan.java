@@ -72,24 +72,19 @@ public class Device_ble_scan extends Activity {
     private int readBufferPosition; // 버퍼 내 문자 저장 위치
     private Handler mHandler;
 
-    private BluetoothGatt bluetoothGatt;
-    private BluetoothGattCharacteristic readCharacteristic = null;
-    private BluetoothGattCharacteristic writeCharacteristic = null;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     final static int BT_REQUEST_ENABLE = 1;
     final static int BT_MESSAGE_READ = 2;
     final static int BT_CONNECTING_STATUS = 3;
-    final static UUID BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private final String SERVICE = "0000fff0-0000-1000-8000-00805f9b34fb";
-    private final String WRITE_UUID = "0000fff1-0000-1000-8000-00805f9b34fb";
-    private final String READ_UUID = "0000fff2-0000-1000-8000-00805f9b34fb";
+//    final static UUID BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private boolean isPermissionAllowed = false;
     int permission;
 
     private String macAddress;
     private String wifi, passwd;
     LeDeviceListAdapter leDeviceListAdapter;
+    private int devicePosition;
 
     ListView listView;
     Button btnNext;
@@ -119,6 +114,7 @@ public class Device_ble_scan extends Activity {
         Intent getIntent = getIntent();
         wifi = getIntent.getStringExtra("wifi");
         passwd = getIntent.getStringExtra("passwd");
+        devicePosition = -1;
 
 //        Toast.makeText(getApplicationContext(), "Wi-Fi : " + wifi + "\n PASSWORD : " + passwd, Toast.LENGTH_SHORT).show();
 
@@ -171,13 +167,14 @@ public class Device_ble_scan extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(macAddress.equals("")){
+                if(devicePosition ==-10){
                     Toast.makeText(getApplicationContext(), "디바이스를 선택해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getApplicationContext(), Device_auth.class);
                     intent.putExtra("wifi", wifi);
                     intent.putExtra("passwd", passwd);
                     intent.putExtra("macAddress", macAddress);
+                    intent.putExtra("device", leDeviceListAdapter.getDevice(devicePosition));
                     startActivity(intent);
                 }
             }
@@ -188,7 +185,9 @@ public class Device_ble_scan extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 view.setSelected(true);
-                macAddress = leDeviceListAdapter.getDevice(position).getAddress();
+                devicePosition = position;
+//                macAddress = leDeviceListAdapter.getDevice(position).getAddress();
+//                device = leDeviceListAdapter.getDevice(position);
             }
         });
 
@@ -250,59 +249,20 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         }
     };
 
-    private boolean findGattService() {
-        List<BluetoothGattService> gattServices = bluetoothGatt.getServices();
 
-        if(gattServices == null)    return false;
+//    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
+//        @Override
+//        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    leDeviceListAdapter.addDevice(device);
+//                    leDeviceListAdapter.notifyDataSetChanged();
+//                }
+//            });
+//        }
+//    };
 
-        readCharacteristic = null;
-        writeCharacteristic = null;
-
-        for(BluetoothGattService gattService : gattServices) {
-            HashMap<String, String> currentServiceData = new HashMap<String, String>();
-
-            if(gattService.getUuid().toString().equals(SERVICE)) {
-                List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
-
-//                Loops through available Characteristics.
-                for(BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics){
-                    if(gattCharacteristic.getUuid().toString().equals(READ_UUID)){
-                        final int charaProp = gattCharacteristic.getProperties();
-
-                        if((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
-                            try{
-                                readCharacteristic = gattCharacteristic;
-                                List<BluetoothGattDescriptor> list = readCharacteristic.getDescriptors();
-                                Log.d("DDDDD1", "read characteristic found : " + charaProp);
-
-                                bluetoothGatt.setCharacteristicNotification(gattCharacteristic, true);
-
-                                // 리시버 설정
-                                BluetoothGattDescriptor descriptor = readCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
-                                bluetoothGatt.writeDescriptor(descriptor);
-
-                            } catch(Exception e) {
-                                e.printStackTrace();
-                                return false;
-                            }
-                        } else {
-                            Log.d("DDDDD1", "read characteristic prop is invlid : " + charaProp);
-                        }
-                    } else if(gattCharacteristic.getUuid().toString().equalsIgnoreCase(WRITE_UUID)){
-                        final int charaProp = gattCharacteristic.getProperties();
-
-                        if((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE) > 0) {
-                            Log.d("DDDDD1", "write characteristic foud : " + charaProp);
-                            writeCharacteristic = gattCharacteristic;
-                        } else {
-                            Log.d("DDDDD1", "write characteristic prop is invalid : " + charaProp);
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    };
 
     @Override
     protected void onDestroy() {

@@ -3,11 +3,19 @@ package com.example.medicinebox;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +26,10 @@ import androidx.annotation.Nullable;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class Device_auth extends Activity {
 
@@ -27,6 +38,7 @@ public class Device_auth extends Activity {
     ProgressBar pbar1, pbar2, pbar3, pbar4;
 
 
+    private final static String TAG = Device_auth.class.getSimpleName();
 
     private static final int REQUEST_ENABLE_BT = 10; // 블루투스 활성화 상태
     private BluetoothAdapter bluetoothAdapter; // 블루투스 어댑터
@@ -38,6 +50,20 @@ public class Device_auth extends Activity {
     private Thread workerThread = null; // 문자열 수신에 사용되는 쓰레드
     private byte[] readBuffer; // 수신 된 문자열을 저장하기 위한 버퍼
     private int readBufferPosition; // 버퍼 내 문자 저장 위치
+
+    private final String SERVICE = "0000fff0-0000-1000-8000-00805f9b34fb";
+    private final String WRITE_UUID = "0000fff1-0000-1000-8000-00805f9b34fb";
+    private final String READ_UUID = "0000fff2-0000-1000-8000-00805f9b34fb";
+
+    BluetoothLeService bluetoothLeService;
+
+    private BluetoothGatt bluetoothGatt;
+    private BluetoothGattCharacteristic readCharacteristic = null;
+    private BluetoothGattCharacteristic writeCharacteristic = null;
+//    private BluetoothLe
+    private BluetoothDevice device;
+    private String deviceName;
+    private String deviceAddr;
 
 
     @Override
@@ -68,20 +94,113 @@ public class Device_auth extends Activity {
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
 //        블루투스 활성화
-        if(bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {                     // 블루투스가 활성화 안되어 있다면
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     // 블루투스 활성화를 위해 필요한 intent
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);                      // 다른 액티비티를 통해서 블루투스를 활성화 한 후에 결과를 requestCode 변수로 리턴
-        }
+//        if(bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {                     // 블루투스가 활성화 안되어 있다면
+//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     // 블루투스 활성화를 위해 필요한 intent
+//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);                      // 다른 액티비티를 통해서 블루투스를 활성화 한 후에 결과를 requestCode 변수로 리턴
+//        }
 
-// aaaaa
         Intent getIntent = getIntent();
         String wifi = getIntent.getStringExtra("wifi");
         String passwd = getIntent.getStringExtra("passwd");
-        String macAddresss = getIntent.getStringExtra("macAddress");
+//        String macAddress = getIntent.getStringExtra("macAddress");
+        device = getIntent.getParcelableExtra("device");
+        deviceName = device.getName();
+        deviceAddr = device.getAddress();
 
-        Toast.makeText(getApplicationContext(), "Wi-Fi : " + wifi + "\nPASSWORD : " + passwd +"\nMACAddr : " + macAddresss, Toast.LENGTH_SHORT).show();
+        bluetoothLeService = new BluetoothLeService();
 
+        bluetoothConnect();
+
+        Toast.makeText(getApplicationContext(), "Wi-Fi : " + wifi + "\nPASSWORD : " + passwd +"\ndevice : " + deviceName +"\nMACAddr : " + deviceAddr, Toast.LENGTH_SHORT).show();
 
 
     }
+
+
+
+    private boolean bluetoothConnect() {
+        try {
+            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+            bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            bluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if(!bluetoothLeService.initialize()) {
+                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();
+            }
+
+            bluetoothLeService.connect(deviceAddr);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            bluetoothLeService = null;
+        }
+    };
+
+    private boolean findGattService() {
+        List<BluetoothGattService> gattServices = bluetoothGatt.getServices();
+
+        if(gattServices == null)    return false;
+
+        readCharacteristic = null;
+        writeCharacteristic = null;
+
+        for(BluetoothGattService gattService : gattServices) {
+            HashMap<String, String> currentServiceData = new HashMap<String, String>();
+
+            if(gattService.getUuid().toString().equals(SERVICE)) {
+                List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
+
+//                Loops through available Characteristics.
+                for(BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics){
+                    if(gattCharacteristic.getUuid().toString().equals(READ_UUID)){
+                        final int charaProp = gattCharacteristic.getProperties();
+
+                        if((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+                            try{
+                                readCharacteristic = gattCharacteristic;
+                                List<BluetoothGattDescriptor> list = readCharacteristic.getDescriptors();
+                                Log.d("DDDDD1", "read characteristic found : " + charaProp);
+
+                                bluetoothGatt.setCharacteristicNotification(gattCharacteristic, true);
+
+                                // 리시버 설정
+                                BluetoothGattDescriptor descriptor = readCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+                                bluetoothGatt.writeDescriptor(descriptor);
+
+                            } catch(Exception e) {
+                                e.printStackTrace();
+                                return false;
+                            }
+                        } else {
+                            Log.d("DDDDD1", "read characteristic prop is invalid : " + charaProp);
+                        }
+                    } else if(gattCharacteristic.getUuid().toString().equalsIgnoreCase(WRITE_UUID)){
+                        final int charaProp = gattCharacteristic.getProperties();
+
+                        if((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE) > 0) {
+                            Log.d("DDDDD1", "write characteristic foud : " + charaProp);
+                            writeCharacteristic = gattCharacteristic;
+                        } else {
+                            Log.d("DDDDD1", "write characteristic prop is invalid : " + charaProp);
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    };
+
+
 }
