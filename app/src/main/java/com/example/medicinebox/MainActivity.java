@@ -1,18 +1,25 @@
 package com.example.medicinebox;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TableRow;
 import android.widget.Toast;
 
@@ -52,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         row1 = findViewById(R.id.row1);
         btnAddmedi = findViewById(R.id.btnAddmedi);
 
+        registerForContextMenu(row1);
+
         //설정
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +85,31 @@ public class MainActivity extends AppCompatActivity {
         btnTake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 복용할 약 있는 경우
+                /*new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("복용 하시겠습니까?")
+                        .setMessage("약 명")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which){
+                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which){
+                                Toast.makeText(getApplicationContext(), "취소 누름", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();*/
 
+                // 복용할 약 없는 경우
+                /*new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("지금은 복용 시간이 아닙니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which){
+                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();*/
             }
         });
 
@@ -84,7 +117,31 @@ public class MainActivity extends AppCompatActivity {
         btnTrash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 버릴 약 있는 경우
+                /*new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("약을 버리시겠습니까?")
+                        .setMessage("약 명")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which){
+                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which){
+                                Toast.makeText(getApplicationContext(), "취소 누름", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();*/
 
+                // 버릴 약 없는 경우
+                /*new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("유통기한이 지난 약이 없습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which){
+                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();*/
             }
         });
 
@@ -92,8 +149,31 @@ public class MainActivity extends AppCompatActivity {
         row1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StoreActivity.class);
-                startActivity(intent);
+                PopupMenu popup = new PopupMenu(MainActivity.this , row1);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.store:
+                                Toast.makeText(getApplicationContext(), "store", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.delete:
+                                Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.cancel:
+                                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+
+
+                //Intent intent = new Intent(getApplicationContext(), StoreActivity.class);
+                //startActivity(intent);
             }
         });
 
