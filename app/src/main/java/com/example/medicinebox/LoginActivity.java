@@ -124,7 +124,7 @@ public class LoginActivity extends Activity {
                             LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
-                                    Toast.makeText(LoginActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "ID 또는 Password를 확인해 주세요1", Toast.LENGTH_SHORT).show();
 
                                 }
                             });
