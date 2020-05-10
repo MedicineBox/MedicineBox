@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import androidx.annotation.Nullable;
 
 public class LoginActivity extends Activity {
 
+    ImageView logo; // 메인 테스트용
     View clayout_top, clayout_bottom;
     EditText edtId, edtPasswd;
     Button btnLogin, btnRegister;
@@ -31,6 +33,8 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        logo = findViewById(R.id.login_img_logo); //메인 테스트용
+
         clayout_top = findViewById(R.id.login_clayout_top);
         clayout_bottom = findViewById(R.id.login_clayout_bottom);
         edtId = findViewById(R.id.login_edt_id);
@@ -38,6 +42,15 @@ public class LoginActivity extends Activity {
         btnLogin = findViewById(R.id.login_btn_login);
         btnRegister = findViewById(R.id.login_btn_register);
 
+
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
 //        id EditText 터치 시
@@ -115,7 +128,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "Sign up page로 이동", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);            // MainActivity로 이동
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(intent);
             }
         });

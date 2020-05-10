@@ -5,22 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class SearchActivity extends AppCompatActivity {
+public class AccountActivity extends AppCompatActivity {
 
-    ImageView btnBack, btnHome, btnSearch;
+    ImageView btnBack, btnHome;
+    Button btnEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_activity);
+        setContentView(R.layout.account_activity);
 
         btnBack = findViewById(R.id.btnBack);
         btnHome = findViewById(R.id.btnHome);
-        btnSearch = findViewById(R.id.btnSearch);
 
-        //뒤로가기
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,19 +29,21 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        //홈
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
 
-        //검색
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        //수정하기
+        btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                Toast.makeText(getApplicationContext(), "수정 되었습니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }

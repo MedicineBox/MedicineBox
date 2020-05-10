@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/backBtn"
+            android:id="@+id/btnBack"
             android:layout_width="35dp"
             android:layout_height="20dp"
             android:layout_marginStart="10dp"
@@ -35,7 +35,7 @@
             android:textSize="24sp" />
 
         <ImageView
-            android:id="@+id/homeBtn"
+            android:id="@+id/btnHome"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="15dp"
@@ -51,30 +51,34 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/editSearch"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:backgroundTint="@color/signature"
             android:ems="10"
             android:hint="의약품명을 입력하세요."
-            android:inputType="textPersonName"
-            android:shadowColor="@color/signature"
-            android:textColorHighlight="@color/signature"
-            android:textColorLink="@color/signature" />
+            android:inputType="textPersonName" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/btnSearch"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_weight="0"
             app:srcCompat="@drawable/search" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/searchList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp" />
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp">
+
+        <ListView
+            android:id="@+id/searchList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp" />
+    </ScrollView>
 </LinearLayout>

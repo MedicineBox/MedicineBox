@@ -81,5 +81,13 @@ public class Device_auth extends Activity {
 
         Toast.makeText(getApplicationContext(), "Wi-Fi : " + wifi + "\nPASSWORD : " + passwd +"\nMACAddr : " + macAddresss, Toast.LENGTH_SHORT).show();
 
+
+
+/*
+        //인증 완료 후
+        Intent intent = new Intent(getApplicationContext(), Splash_auth.class);
+        startActivity(intent);
+*/
+
     }
 }

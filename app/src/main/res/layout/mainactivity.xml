@@ -36,7 +36,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/settingBtn"
+            android:id="@+id/btnSetting"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
@@ -55,19 +55,17 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/searchTxt"
+            android:id="@+id/editSearch"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:backgroundTint="@color/signature"
             android:ems="10"
             android:hint="의약품명을 입력하세요."
-            android:inputType="textPersonName"
-            android:shadowColor="@color/signature"
-            android:textColorHighlight="@color/signature"
-            android:textColorLink="@color/signature" />
+            android:inputType="textPersonName" />
 
         <ImageView
-            android:id="@+id/searchBtn"
+            android:id="@+id/btnSearch"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_weight="0"
@@ -99,13 +97,13 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/takeBtn"
+                android:id="@+id/btnTake"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 app:srcCompat="@drawable/drug" />
 
             <ImageView
-                android:id="@+id/trashBtn"
+                android:id="@+id/btnTrash"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="50dp"
@@ -114,139 +112,147 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TableLayout
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:stretchColumns="*">
+        android:layout_marginBottom="30dp">
 
-        <TableRow
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/signature">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:stretchColumns="*">
 
-            <TextView
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="위치"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="보관 의약품"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="오늘"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="복용"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/signature">
-
-            <TextView
-                android:id="@+id/slotNum"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="1"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/mediPhoto"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    app:srcCompat="@drawable/search_logo" />
+                android:background="@color/signature">
 
                 <TextView
-                    android:id="@+id/mediName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:background="#ffffff"
                     android:gravity="center"
-                    android:text="보관 의약품명"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="위치"
                     android:textColor="#000000"
                     android:textSize="18sp" />
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/todayChk"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="보관 의약품"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="오늘"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="복용"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="V"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:background="@color/signature"
+                android:clickable="true">
 
-            <TextView
-                android:id="@+id/takeChk"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="O"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/slotNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="1"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
 
-    </TableLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/mediPhoto"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        app:srcCompat="@drawable/search_logo" />
+
+                    <TextView
+                        android:id="@+id/mediName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:text="보관 의약품명"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/todayChk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="V"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/takeChk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="O"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/btnAddmedi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

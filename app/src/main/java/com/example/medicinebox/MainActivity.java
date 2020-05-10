@@ -11,11 +11,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,20 +28,86 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    LinearLayout bHome, bSearch, bSetting;
+/*    LinearLayout bHome, bSearch, bSetting;
     ImageButton bBtnHome, bBtnSearch, bBtnSetting;
-    View bottomBar;
+    View bottomBar;*/
 
 //    firebase 관련
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    FloatingActionButton btnAddmedi;
+    ImageView btnSetting, btnSearch, btnTake, btnTrash;
+    TableRow row1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainactivity);
-/*
 
+        btnSetting = findViewById(R.id.btnSetting);
+        btnSearch = findViewById(R.id.btnSearch);
+        btnTake = findViewById(R.id.btnTake);
+        btnTrash = findViewById(R.id.btnTrash);
+        row1 = findViewById(R.id.row1);
+        btnAddmedi = findViewById(R.id.btnAddmedi);
+
+        //설정
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //검색
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //복용하기
+        btnTake.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        //버리기
+        btnTrash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        //목록에서 의약품 선택
+        row1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), StoreActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // 보관 의약품 추가
+        btnAddmedi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddMediActivity.class);
+                startActivity(intent);
+            }
+        });
+
+/*
         imgbtnPill1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
