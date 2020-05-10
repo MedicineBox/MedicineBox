@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 public class REST_API {
@@ -63,6 +64,7 @@ public class REST_API {
                 if (br != null) {
                     br.close();
                 }
+                conn.disconnect();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,10 +107,10 @@ public class REST_API {
             wr.flush();
 
             StringBuilder stringBuilder = new StringBuilder();
-            if(conn.getResponseCode() == HttpURLConnection.HTTP_OK) {                                   // 연결 성공
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {                                   // 연결 성공
                 br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 String line;
-                while((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null) {
                     stringBuilder.append(line).append("\n");
                 }
                 br.close();
@@ -118,6 +120,9 @@ public class REST_API {
                 Log.i("CONNECTION", conn.getResponseMessage());
                 return null;
             }
+        }catch (SocketTimeoutException t) {
+            t.printStackTrace();
+            return "timeout";
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

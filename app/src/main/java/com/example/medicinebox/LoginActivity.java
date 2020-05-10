@@ -119,15 +119,6 @@ public class LoginActivity extends Activity {
                             intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
                             startActivity(intent);
                             LoginActivity.this.finish();
-                        } else {
-//                            토스트를 띄우고 싶은데 백그라운드에서는 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
-                            LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
-                                @Override
-                                public void run() {
-                                    Toast.makeText(LoginActivity.this, "ID 또는 Password를 확인해 주세요1", Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
                         }
                     }
                 });
@@ -154,8 +145,23 @@ public class LoginActivity extends Activity {
 
         String result = login.post(json);
 //        Log.d("LOGIN", "result : " + result);
-        if(result == null || result.equals("")){
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("LOGIN", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(LoginActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
             Log.d("LOGIN", "FAIL!!!!!");
+            LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(LoginActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
+                }
+            });
             return false;
         } else if(result.equals("true\n")) {
             Log.d("LOGIN", "SUCCESS!!!!!");
