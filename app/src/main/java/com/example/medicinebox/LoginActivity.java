@@ -3,12 +3,10 @@ package com.example.medicinebox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,9 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class LoginActivity extends Activity {
 
@@ -104,34 +99,15 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
                 }
 
-
-/*
-                네트워크 작업은 메인스레드로 작동이 안됨. 따라서 모든 네트워킹 코드는 백그라운드에서 사용해야된다.
-                그래서 async 사용
- */
-                AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
-                    @Override
-                    public void run() {
-                        flag = login(id, passwd);
-                        Log.d("IN ASYNC", String.valueOf(flag));
-                        if(flag) {
-                            Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
-                            intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
-                            startActivity(intent);
-                            LoginActivity.this.finish();
-                        } else {
-//                            토스트를 띄우고 싶은데 백그라운드에서는 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
-                            LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
-                                @Override
-                                public void run() {
-                                    Toast.makeText(LoginActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
-                        }
-                    }
-                });
-
+                //서버에서 확인해야함
+                flag = true;    // 일단 확인했다 치고
+                if(flag) {
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);            // MainActivity로 이동
+                    Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
+//                    intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                }
             }
         });
 
@@ -146,24 +122,6 @@ public class LoginActivity extends Activity {
 
     }
 
-    private boolean login(String id, String pw) {
-
-        REST_API login = new REST_API("login");
-
-        String json = "{\"id\" : \"" + id + "\", \"password\" : \"" + pw + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
-
-        String result = login.post(json);
-//        Log.d("LOGIN", "result : " + result);
-        if(result == null || result.equals("")){
-            Log.d("LOGIN", "FAIL!!!!!");
-            return false;
-        } else if(result.equals("true\n")) {
-            Log.d("LOGIN", "SUCCESS!!!!!");
-            return true;
-        }
-
-        return false;
-    }
 
 
 
