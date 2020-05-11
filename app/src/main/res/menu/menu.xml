@@ -3,15 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/store"
-        android:title="보기" />
+        android:id="@+id/store_edit"
+        android:title="수정하기" />
 
     <item
-        android:id="@+id/delete"
+        android:id="@+id/store_delete"
         android:title="삭제하기" />
-
-    <item
-        android:id="@+id/cancel"
-        android:title="취소" />
 
 </menu>

@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_gravity="center"
         android:background="@color/signature"
         android:gravity="center"
         android:orientation="horizontal">
@@ -23,16 +24,22 @@
             app:srcCompat="@drawable/back" />
 
         <TextView
-            android:id="@+id/store"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="45dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="보관 의약품 정보"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="35dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/menu" />
 
     </LinearLayout>
 
@@ -62,17 +69,6 @@
             android:text="1번"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/takeEdit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|end"
-            android:text="수정"
-            android:textColor="@color/signature"
-            android:textSize="25sp"
-            android:textStyle="bold" />
     </LinearLayout>
 
     <TabHost

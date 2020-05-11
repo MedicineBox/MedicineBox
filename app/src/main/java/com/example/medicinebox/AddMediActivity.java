@@ -92,9 +92,6 @@ public class AddMediActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                AddMediActivity.this.finish();*/
             }
         });
 

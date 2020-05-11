@@ -133,7 +133,9 @@ public class LoginActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Sign up page로 이동", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Sign up page로 이동", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
 
