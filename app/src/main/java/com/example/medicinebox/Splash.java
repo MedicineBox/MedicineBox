@@ -9,22 +9,37 @@ import androidx.annotation.Nullable;
 
 public class Splash extends Activity {
 
+    boolean login = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
         Handler hd = new Handler();
+
+        if(Session.getUserData(getApplicationContext()).length() != 0) {                 // 로그인 정보가 있을 때
+            login = true;
+        }
         hd.postDelayed(new splashhandler(), 3000);                              // 3초 후에 splashhandler 실행
+
     }
 
 
     public class splashhandler implements Runnable  {
         public void run() {
-            startActivity(new Intent(getApplication(), LoginActivity.class));           // 로딩이 끝난 후 loginActivity로 이동
+            Intent intent;
+            if(login) {                                                                 // 로그인 정보가 있을 때
+                intent = new Intent(getApplication(), MainActivity.class);              // MainActivity로 이동
+            } else {                                                                    // 로그인 정보가 없을 때
+                intent = new Intent(getApplication(), LoginActivity.class);             // loginActivity로 이동
+            }
+            startActivity(intent);                                                      // 지정한 액티비티로 이동
             Splash.this.finish();                                                       // 로딩페이지를 activity stack에서 제거
         }
     }
+
+
 
     @Override
     public void onBackPressed() {

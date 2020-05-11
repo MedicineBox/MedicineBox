@@ -74,7 +74,10 @@ public class SettingActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "로그아웃", Toast.LENGTH_SHORT).show();
+                Session.clearUserData(getApplicationContext());                                     // 사용자 데이터 삭제
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);           // login activity로 이동
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);   // 새로운 액티비티 태스크? 만들고 이미 있던 스택 삭제
+                startActivity(intent);
             }
         });
 
