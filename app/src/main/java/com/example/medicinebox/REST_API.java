@@ -87,6 +87,7 @@ public class REST_API {
 
 //            오류 안남
             url = new URL(string_url);
+            Log.i("url",string_url);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestMethod("POST");
