@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -18,7 +19,8 @@ public class Splash extends Activity {
 
         Handler hd = new Handler();
 
-        if(Session.getUserData(getApplicationContext()).length() != 0) {                 // 로그인 정보가 있을 때
+        if(Session.getUserData(getApplicationContext()).length() != 0) {// 로그인 정보가 있을 때
+            //Log.d("session : ",Session.getUserData(getApplicationContext()));
             login = true;
         }
         hd.postDelayed(new splashhandler(), 3000);                              // 3초 후에 splashhandler 실행

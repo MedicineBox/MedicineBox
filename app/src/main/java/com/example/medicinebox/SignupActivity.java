@@ -55,6 +55,7 @@ public class SignupActivity extends AppCompatActivity {
                         flag = signup(name, id, pwd, phone);
                         Log.d("IN ASYNC", String.valueOf(flag));
                         if(flag) {
+                            Toast.makeText(getApplicationContext(), "가입 되었습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
                             SignupActivity.this.finish();
