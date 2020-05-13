@@ -32,7 +32,7 @@ public class Device_auth_wifi extends Activity {
                 wifi = edtWifi.getText().toString();
                 passwd = edtPasswd.getText().toString();
 
-                Intent intent = new Intent(getApplicationContext(), Device_ble_scan.class);
+                Intent intent = new Intent(getApplicationContext(), Device_bt_scan.class);
                 intent.putExtra("wifi", wifi);
                 intent.putExtra("passwd", passwd);
                 startActivity(intent);

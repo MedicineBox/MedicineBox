@@ -2,6 +2,7 @@ package com.example.medicinebox;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,47 +14,47 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-class LeDeviceListAdapter extends BaseAdapter {
-    private ArrayList<BluetoothDevice> mLeDevices;
+class DeviceListAdapter extends BaseAdapter {
+    private ArrayList<BluetoothDevice> mDevices;
     private LayoutInflater mInflater;
     private int mSelectedRadioPosition;
 
-    public LeDeviceListAdapter() {
+    public DeviceListAdapter() {
         super();
-        mLeDevices = new ArrayList<BluetoothDevice>();
+        mDevices = new ArrayList<BluetoothDevice>();
 //        mInflater = Device_ble_scan2.this.getLayoutInflater();
 //        mInflater = LayoutInflater.from(mContext);
     }
 
-    public LeDeviceListAdapter(Context context) {
+    public DeviceListAdapter(Context context) {
         super();
-        mLeDevices = new ArrayList<BluetoothDevice>();
+        mDevices = new ArrayList<BluetoothDevice>();
         mInflater = LayoutInflater.from(context);
     }
 
     public void addDevice(BluetoothDevice device) {
-        if(!mLeDevices.contains(device)) {
-            mLeDevices.add(device);
+        if(!mDevices.contains(device)) {
+            mDevices.add(device);
         }
     }
 
     public BluetoothDevice getDevice(int position) {
-        return mLeDevices.get(position);
+        return mDevices.get(position);
     }
 
     public void clear() {
-        mLeDevices.clear();
+        mDevices.clear();
     }
 
 
     @Override
     public int getCount() {
-        return mLeDevices.size();
+        return mDevices.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mLeDevices.get(position);
+        return mDevices.get(position);
     }
 
     @Override
@@ -66,13 +67,14 @@ class LeDeviceListAdapter extends BaseAdapter {
 
         convertView = mInflater.inflate(R.layout.bt_items, null);
 
-//        convertView.setActivated(true);
+//        Log.d("LISTVIEW", "called getview!!!!!!!!!!");
+        //        convertView.setActivated(true);
         convertView.setSelected(true);
 
         TextView tvName = convertView.findViewById(R.id.btItemName);
         TextView tvAddr = convertView.findViewById(R.id.btItemAddr);
 
-        BluetoothDevice device = mLeDevices.get(position);
+        BluetoothDevice device = mDevices.get(position);
         final String deviceName = device.getName();
         if(deviceName != null && deviceName.length() > 0) {
             tvName.setText(deviceName);

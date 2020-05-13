@@ -40,7 +40,7 @@
         app:layout_constraintHeight_percent="1"
         android:layout_marginLeft="50dp"
         android:scaleType="fitCenter"
-        android:background="#fff"
+        android:background="#fafafa"
         android:visibility="gone"
         />
     <androidx.core.widget.ContentLoadingProgressBar
@@ -61,13 +61,13 @@
         android:id="@+id/auth_listBtScan"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#ffffff"
+        android:background="#fafafa"
         app:layout_constraintStart_toStartOf="@id/auth_tvBtScanMain"
         app:layout_constraintEnd_toEndOf="@id/auth_tvBtScanMain"
         app:layout_constraintTop_toTopOf="@id/auth_tvBtScanSub"
-        app:layout_constraintTop_toBottomOf="@id/auth_btnScan"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintBottom_toTopOf="@id/auth_btnScan"
         android:layout_marginTop="70dp"
+        android:layout_marginBottom="30dp"
         />
 <!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:id="@+id/auth_listBtScan"-->
