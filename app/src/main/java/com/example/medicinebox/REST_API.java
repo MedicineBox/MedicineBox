@@ -18,7 +18,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 public class REST_API {
-    final static String base_url = "http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:65003/";
+    final static String base_url = "http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:65004/";
 
     String string_url;
     URL url = null;
@@ -72,7 +72,6 @@ public class REST_API {
     }
 
 
-
     public String post(String jsonMsg) {
         try {
 
@@ -112,7 +111,9 @@ public class REST_API {
                 br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 String line;
                 while ((line = br.readLine()) != null) {
+                    Log.d("line",line);
                     stringBuilder.append(line).append("\n");
+                    //stringBuilder.append(line);
                 }
                 br.close();
                 Log.i("CONNECTION", stringBuilder.toString());
@@ -164,8 +165,8 @@ public class REST_API {
                     stringBuilder.append(line).append("\n");
                 }
                 br.close();
-                Log.i("CONNECTION", stringBuilder.toString());
                 return stringBuilder.toString();
+                //JSONObject json = new JSONObject;/
             } else {
                 Log.i("CONNECTION", conn.getResponseMessage());
                 return null;
