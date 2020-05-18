@@ -42,7 +42,7 @@ public class DBConn extends AsyncTask<String, String, String> {
 
             InputStream inputStream = conn.getInputStream();                // 입력 스트림 생성
             reader = new BufferedReader(new InputStreamReader(inputStream));// 속도를 향상시키고 부하를 줄이기 위한 버퍼 선언
-            StringBuffer buffer = new StringBuffer();                       // 실제 데이터를 받는 곳
+            StringBuffer buffer = new StringBuffer();                    // 실제 데이터를 받는 곳
 
             String line = "";                                               // line 별 String 받기 위한 임시 변수
 
@@ -54,8 +54,7 @@ public class DBConn extends AsyncTask<String, String, String> {
             while((line = reader.readLine()) != null) {
                 buffer.append(line);
             }
-
-            return buffer.toString();                                       // String으로 형변환 해줘야 한다.
+            return buffer.toString();                                     // String으로 형변환 해줘야 한다.
 
 
         } catch (Exception e) {

@@ -18,7 +18,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 public class REST_API {
-    final static String base_url = "http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:65001/";
+    final static String base_url = "http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:65004/";
 
     String string_url;
     URL url = null;
@@ -72,7 +72,6 @@ public class REST_API {
     }
 
 
-
     public String post(String jsonMsg) {
         try {
 
@@ -87,6 +86,7 @@ public class REST_API {
 
 //            오류 안남
             url = new URL(string_url);
+            Log.i("post url",string_url);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestMethod("POST");
@@ -111,11 +111,62 @@ public class REST_API {
                 br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 String line;
                 while ((line = br.readLine()) != null) {
+                    Log.d("line",line);
                     stringBuilder.append(line).append("\n");
+                    //stringBuilder.append(line);
                 }
                 br.close();
                 Log.i("CONNECTION", stringBuilder.toString());
                 return stringBuilder.toString();
+            } else {
+                Log.i("CONNECTION", conn.getResponseMessage());
+                return null;
+            }
+        }catch (SocketTimeoutException t) {
+            t.printStackTrace();
+            return "timeout";
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            disconnect();
+        }
+        return null;
+    }
+
+
+    public String put(String jsonMsg) {
+        try {
+            url = new URL(string_url);
+            Log.i("put url",string_url);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("PUT");
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setDefaultUseCaches(false);
+
+            conn.connect();
+
+
+            Log.d("CONNECTION", jsonMsg);
+
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(jsonMsg);
+            wr.flush();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {                                   // 연결 성공
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                br.close();
+                return stringBuilder.toString();
+                //JSONObject json = new JSONObject;/
             } else {
                 Log.i("CONNECTION", conn.getResponseMessage());
                 return null;

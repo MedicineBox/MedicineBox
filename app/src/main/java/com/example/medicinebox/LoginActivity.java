@@ -119,7 +119,8 @@ public class LoginActivity extends Activity {
                                 Session.setUserData(getApplicationContext(), id);
                                 Log.d("Session", "set user id : " + id);
                             }
-                            Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
+                            //Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class); //REST API 테스트
 //                            intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
                             startActivity(intent);
                             LoginActivity.this.finish();
@@ -133,7 +134,9 @@ public class LoginActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Sign up page로 이동", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Sign up page로 이동", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivity(intent);
             }
         });
 

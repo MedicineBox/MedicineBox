@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
         row1 = findViewById(R.id.row1);
         btnAddmedi = findViewById(R.id.btnAddmedi);
 
-        registerForContextMenu(row1);
-
         //설정
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,31 +147,8 @@ public class MainActivity extends AppCompatActivity {
         row1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(MainActivity.this , row1);
-                MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.store:
-                                Toast.makeText(getApplicationContext(), "store", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.delete:
-                                Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.cancel:
-                                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popup.show();
-
-
-                //Intent intent = new Intent(getApplicationContext(), StoreActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), StoreActivity.class);
+                startActivity(intent);
             }
         });
 
