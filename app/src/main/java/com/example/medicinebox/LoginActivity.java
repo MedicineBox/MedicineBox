@@ -28,7 +28,7 @@ public class LoginActivity extends Activity {
     View clayout_top, clayout_bottom;
     EditText edtId, edtPasswd;
     Button btnLogin, btnRegister;
-    String id, passwd, hint;
+    String id, passwd;
     boolean flag = false;
 
     @Override
@@ -119,6 +119,7 @@ public class LoginActivity extends Activity {
                                 Session.setUserData(getApplicationContext(), id);
                                 Log.d("Session", "set user id : " + id);
                             }
+
                             //Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class); //REST API 테스트
 //                            intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
@@ -173,6 +174,13 @@ public class LoginActivity extends Activity {
         } else if(result.equals("true\n")) {
             Log.d("LOGIN", "SUCCESS!!!!!");
             return true;
+        } else if(result.equals("false\n")) {
+            LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(LoginActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         return false;

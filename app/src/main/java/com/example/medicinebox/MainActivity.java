@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 //    firebase 관련
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    String id;
+
     FloatingActionButton btnAddmedi;
     ImageView btnSetting, btnSearch, btnTake, btnTrash;
     TableRow row1;
@@ -58,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
         btnTrash = findViewById(R.id.btnTrash);
         row1 = findViewById(R.id.row1);
         btnAddmedi = findViewById(R.id.btnAddmedi);
+
+        // 세션 id 받아오기
+        id = Session.getUserData(getApplicationContext());
+
+        Toast.makeText(getApplicationContext(),id+"님 안녕하세요!", Toast.LENGTH_SHORT).show();
 
         //설정
         btnSetting.setOnClickListener(new View.OnClickListener() {

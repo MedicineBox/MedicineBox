@@ -49,26 +49,24 @@ public class SignupActivity extends AppCompatActivity {
                 pwd2 = editPwd2.getText().toString();
                 phone = editPhone.getText().toString();
 
-                AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
-                    @Override
-                    public void run() {
-                        flag = signup(name, id, pwd, phone);
-                        Log.d("IN ASYNC", String.valueOf(flag));
-                        if(flag) {
-                            //Toast.makeText(getApplicationContext(), "가입 되었습니다.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            startActivity(intent);
-                            SignupActivity.this.finish();
+                if (pwd.equals(pwd2)) {
+                    AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
+                        @Override
+                        public void run() {
+                            flag = signup(name, id, pwd, phone);
+                            Log.d("IN ASYNC", String.valueOf(flag));
+                            if(flag) {
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                SignupActivity.this.finish();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(),"비밀번호가 다릅니다.",Toast.LENGTH_LONG).show();
+                }
 
 
-
-                /*Toast.makeText(getApplicationContext(), "가입 되었습니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();*/
             }
         });
     }
@@ -97,13 +95,26 @@ public class SignupActivity extends AppCompatActivity {
             SignupActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
                 public void run() {
-                    Toast.makeText(SignupActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "이미 사용중인 아이디 입니다.", Toast.LENGTH_SHORT).show();
                 }
             });
             return false;
         } else if(result.equals("true\n")) {
             Log.d("SIGNUP", "SUCCESS!!!!!");
+            SignupActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SignupActivity.this, "가입 되었습니다.", Toast.LENGTH_LONG).show();
+                }
+            });
             return true;
+        } else if(result.equals("false\n")) {
+            SignupActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SignupActivity.this, "이미 사용중인 아이디 입니다.", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         return false;

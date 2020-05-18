@@ -182,4 +182,102 @@ public class REST_API {
         return null;
     }
 
+
+    public String delete(String jsonMsg) {
+        try {
+            url = new URL(string_url);
+            Log.i("delete url",string_url);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("DELETE");
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setDefaultUseCaches(false);
+
+            conn.connect();
+
+
+            Log.d("CONNECTION", jsonMsg);
+
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(jsonMsg);
+            wr.flush();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {                                   // 연결 성공
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                br.close();
+                return stringBuilder.toString();
+                //JSONObject json = new JSONObject;/
+            } else {
+                Log.i("CONNECTION", conn.getResponseMessage());
+                return null;
+            }
+        }catch (SocketTimeoutException t) {
+            t.printStackTrace();
+            return "timeout";
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            disconnect();
+        }
+        return null;
+    }
+
+
+    public String get(String jsonMsg) {
+        try {
+            url = new URL(string_url);
+            Log.i("delete url",string_url);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("DELETE");
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setDefaultUseCaches(false);
+
+            conn.connect();
+
+
+            Log.d("CONNECTION", jsonMsg);
+
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(jsonMsg);
+            wr.flush();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {                                   // 연결 성공
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                br.close();
+                return stringBuilder.toString();
+                //JSONObject json = new JSONObject;/
+            } else {
+                Log.i("CONNECTION", conn.getResponseMessage());
+                return null;
+            }
+        }catch (SocketTimeoutException t) {
+            t.printStackTrace();
+            return "timeout";
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            disconnect();
+        }
+        return null;
+    }
+
 }
