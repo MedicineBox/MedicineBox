@@ -15,12 +15,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -41,16 +46,18 @@ import java.util.UUID;
 
 public class Device_auth extends Activity {
 
-    LinearLayout step1, step2, step3, step4;
-    ImageView img1, img2, img3, img4;
+    LinearLayout step1, step2, step3, step4, step2_1;
+    ImageView img1, img2, img3, img4, imgMain;
     ProgressBar pbar1, pbar2, pbar3, pbar4;
+    Button btnStep2;
 
+    String user_id, wifi_id, wifi_pw, device_id;
+
+    Handler handler;
+    Integer step;
+    Thread tStep1, tStep3, tStep4;
 
     private final static String TAG = Device_auth.class.getSimpleName();
-
-
-    private String sendString;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,67 +68,123 @@ public class Device_auth extends Activity {
         step2 = findViewById(R.id.auth_layout2);
         step3 = findViewById(R.id.auth_layout3);
         step4 = findViewById(R.id.auth_layout4);
+        step2_1 = findViewById(R.id.auth_layout2_1);
         img1 = findViewById(R.id.auth_imgview1);
         img2 = findViewById(R.id.auth_imgview2);
         img3 = findViewById(R.id.auth_imgview3);
         img4 = findViewById(R.id.auth_imgview4);
+        imgMain = findViewById(R.id.auth_imgview_main);
         pbar1 = findViewById(R.id.auth_progress1);
         pbar2 = findViewById(R.id.auth_progress2);
         pbar3 = findViewById(R.id.auth_progress3);
         pbar4 = findViewById(R.id.auth_progress4);
+        btnStep2 = findViewById(R.id.auth_btnStep2);
 
 
 //        시작시엔 스텝 2, 3, 4 숨기기
         step2.setVisibility(View.INVISIBLE);
         step3.setVisibility(View.INVISIBLE);
         step4.setVisibility(View.INVISIBLE);
+        step2_1.setVisibility(View.INVISIBLE);
 
 
         Intent getIntent = getIntent();
-        String wifi_id = getIntent.getStringExtra("wifi_id");
-        String wifi_pw = getIntent.getStringExtra("wifi_pw");
-        String device_id = getIntent.getStringExtra("device_id");
-        sendString = "{ \"device_id\" : \"" + device_id + ", \"wifi_id\" : \"" + wifi_id + "\", \"wifi_pw\" : \"" + wifi_pw + "\" }";
+        wifi_id = getIntent.getStringExtra("wifi_id");
+        wifi_pw = getIntent.getStringExtra("wifi_pw");
+        device_id = getIntent.getStringExtra("device_id");
+        user_id = Session.getUserData(getApplicationContext());
+        step = 1;
+
+
+        tStep1 = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                if(sendDeviceInfo(device_id, wifi_id, wifi_pw)) {
+                    updateProgressStage(1);
+                }
+
+            }
+        });
+
+        tStep3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                while(true) {
+                    if(!syncDevice(device_id)){
+                        toastMsg("서버에서 디바이스 접속 상태를 다시 확인중입니다.");
+                        handler.postDelayed(null, 1000);
+                    } else {
+                        updateProgressStage(3);
+                    }
+//                }
+            }
+        });
+
+        tStep4 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d(TAG, "tStep4: UPDATE USER DATA!!!");
+                    while (true) {
+                        if (updateUserdata(user_id, device_id)) {
+                            Log.d(TAG, "onResume: UPDATE SUCCESS!!!");
+                            updateProgressStage(4);
+                            break;
+                        } else {
+                            Log.d(TAG, "tStep4: RETRYING..");
+                            Thread.sleep(500);
+                        }
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btnStep2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProgressStage(2);
+                btnStep2.setEnabled(false);
+            }
+        });
 
 
 
-//        Toast.makeText(getApplicationContext(), "Wi-Fi : " + wifi + "\nPASSWORD : " + passwd +"\ndevice : " + deviceName +"\nMACAddr : " + deviceAddr, Toast.LENGTH_SHORT).show();
-
+        tStep1.start();
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        registerReceiver()
-    }
-
-
-
-//    진행 단계 업데이트
-    private void updateProgressStage(final int step) {
+    //    진행 단계 업데이트
+    private void updateProgressStage(final int s) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                switch (step) {
+                switch (s) {
                     case 1:
                         pbar1.setVisibility(View.GONE);
                         img1.setVisibility(View.VISIBLE);
                         step2.setVisibility(View.VISIBLE);
+                        step2_1.setVisibility(View.VISIBLE);
                         break;
                     case 2:
+                        step2_1.setVisibility(View.INVISIBLE);
                         pbar2.setVisibility(View.GONE);
                         img2.setVisibility(View.VISIBLE);
                         step3.setVisibility(View.VISIBLE);
+                        tStep3.start();
                         break;
                     case 3:
                         pbar3.setVisibility(View.GONE);
                         img3.setVisibility(View.VISIBLE);
                         step4.setVisibility(View.VISIBLE);
+                        tStep4.start();
                         break;
                     case 4:
                         pbar4.setVisibility(View.GONE);
                         img4.setVisibility(View.VISIBLE);
+                        Intent intent = new Intent(getApplicationContext(), Splash_auth.class);
+                        startActivity(intent);
                         break;
                 }
             }
@@ -129,9 +192,80 @@ public class Device_auth extends Activity {
     }
 
 
+    private boolean sendDeviceInfo(String device_id, String wifi_id, String wifi_pw) {
+        String json = "{ \"device_id\" : \"" + device_id + "\", \"wifi_id\" : \"" + wifi_id + "\", \"wifi_pw\" : \"" + wifi_pw + "\" }";
+
+        REST_API conn_server = new REST_API("wifi");
+        String result = conn_server.post(json);
 
 
+        Log.d(TAG, "RETURN : " + result);
+        if(result.equals("true\n")) {
+            return true;
+        } else if(result.equals("false")) {
+            toastMsg("전송 실패! 다시 시도합니다.");
+            return false;
+        } else {
+            toastMsg("전송 실패! 네트워크 환경이나 전송할 데이터를 확인해주세요.");
+            Log.e(TAG, "return data : " + result);
+            return false;
+        }
 
+    }
+
+    private boolean syncDevice(String device_id) {
+        String param = "device_id=" + device_id;
+
+        REST_API conn_server = new REST_API("wifi");
+        String result = "";
+        int num = 0;
+
+        try {
+            while (true) {
+                if (result.equals("[]\n")) {
+                    Log.d(TAG, "syncDevice: matched!!");
+                    return true;
+                }
+                if (num > 10) {
+                    break;
+                } else {
+                    result = conn_server.get(param);
+                    Thread.sleep(2000);
+
+                    num++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    private boolean updateUserdata(String user_id, String device_id){
+        String json = "{ \"user_id\" : \"" + user_id + "\" , \"user_device\" : \"" + device_id + "\" }";
+
+        REST_API conn_server = new REST_API("account_addDevice");
+        String result = conn_server.post(json);
+
+        if(result.equals("true\n")) {
+            return true;
+        } else {
+            toastMsg("정보 업데이트 실패 ");
+            return false;
+        }
+
+    }
+
+
+    private void toastMsg(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Device_auth.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 

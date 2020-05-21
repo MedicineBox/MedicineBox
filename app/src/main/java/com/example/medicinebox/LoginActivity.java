@@ -152,7 +152,7 @@ public class LoginActivity extends Activity {
 
         String result = login.post(json);
 //        Log.d("LOGIN", "result : " + result);
-        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시r
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
             Log.d("LOGIN", "TIMEOUT!!!!!");
 //            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
             LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
