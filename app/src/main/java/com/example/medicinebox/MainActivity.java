@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton btnAddmedi;
     ImageView btnSetting, btnSearch, btnTake, btnTrash;
     TableRow row1;
+    View baselayout;
 
 
     @Override
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         btnTrash = findViewById(R.id.btnTrash);
         row1 = findViewById(R.id.row1);
         btnAddmedi = findViewById(R.id.btnAddmedi);
+        baselayout = findViewById(R.id.main_baselayout);
 
         // 세션 id 받아오기
         id = Session.getUserData(getApplicationContext());
@@ -295,5 +299,27 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Setting 클릭", Toast.LENGTH_SHORT).show();
             }
         });*/
+
+
+
+        baselayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                baselayout.setFocusable(true);
+                baselayout.requestFocus();
+                return true;
+            }
+        });
+    }
+
+
+//    키보드 숨김
+    public void hideKeyboard() {
+        View view = getCurrentFocus();
+        if(view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

@@ -44,7 +44,6 @@ public class LoginActivity extends Activity {
         btnRegister = findViewById(R.id.login_btn_register);
 
 
-
 //        id EditText 터치 시
         edtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {                   // 포커스 이동
             @Override
