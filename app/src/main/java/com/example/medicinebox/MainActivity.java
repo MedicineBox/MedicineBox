@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 //    firebase 관련
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    String id;
+
+    TextView editSearch;
     FloatingActionButton btnAddmedi;
     ImageView btnSetting, btnSearch, btnTake, btnTrash;
     TableRow row1;
@@ -52,12 +56,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainactivity);
 
+        editSearch = findViewById(R.id.editSearch);
         btnSetting = findViewById(R.id.btnSetting);
         btnSearch = findViewById(R.id.btnSearch);
         btnTake = findViewById(R.id.btnTake);
         btnTrash = findViewById(R.id.btnTrash);
         row1 = findViewById(R.id.row1);
         btnAddmedi = findViewById(R.id.btnAddmedi);
+
+        // 세션 id 받아오기
+        id = Session.getUserData(getApplicationContext());
+
+        Toast.makeText(getApplicationContext(),id+"님 안녕하세요!", Toast.LENGTH_SHORT).show();
 
         //설정
         btnSetting.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra("search",editSearch.getText().toString()); //검색어 검색 결과화면으로 넘겨주기
                 startActivity(intent);
             }
         });

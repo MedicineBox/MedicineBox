@@ -88,21 +88,33 @@ public class AccountActivity extends AppCompatActivity {
                 newpwd2 = editNewpwd2.getText().toString();
                 phone = editPhone.getText().toString();
 
-                AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
-                    @Override
-                    public void run() {
-                        flag = accountchk(id, oldpwd);
-                        Log.d("IN ASYNC", String.valueOf(flag));
-                        if(flag) {
-                            account(id, name, newpwd, phone);
-                            if(flag2) {
-                                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                                startActivity(intent);
-                                AccountActivity.this.finish();
+                if (newpwd.equals(newpwd2)) {
+                    AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
+                        @Override
+                        public void run() {
+                            flag = accountchk(id, oldpwd);
+                            Log.d("IN ASYNC", String.valueOf(flag));
+                            if(flag) {
+                                flag2 = account(id, name, newpwd, phone);
+                                if(flag2) {
+                                    AccountActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(AccountActivity.this, "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                                    startActivity(intent);
+                                    AccountActivity.this.finish();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(),"새 비밀번호가 다릅니다.",Toast.LENGTH_LONG).show();
+                }
+
+
 
             }
         });
@@ -178,13 +190,20 @@ public class AccountActivity extends AppCompatActivity {
             AccountActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
                 public void run() {
-                    Toast.makeText(AccountActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AccountActivity.this, "기존 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();
                 }
             });
             return false;
         } else if(result.equals("true\n")) {
             Log.d("ACCOUNTchk", "SUCCESS!!!!!");
             return true;
+        } else if(result.equals("false\n")) {
+            AccountActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(AccountActivity.this, "기존 비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         return false;
@@ -214,7 +233,7 @@ public class AccountActivity extends AppCompatActivity {
             AccountActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
                 public void run() {
-                    Toast.makeText(AccountActivity.this, "ID 또는 Password를 확인해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AccountActivity.this, "", Toast.LENGTH_SHORT).show();
                 }
             });
             return false;
