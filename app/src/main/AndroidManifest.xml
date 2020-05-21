@@ -39,7 +39,7 @@
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity android:name=".Device_auth_wifi" />
         <activity android:name=".Device_auth" />
-        <activity android:name=".Device_bt_scan" />
+        <activity android:name=".Device_init_network" />
         <activity android:name=".Splash_auth" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".SearchActivity" />

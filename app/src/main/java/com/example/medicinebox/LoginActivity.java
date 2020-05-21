@@ -119,8 +119,8 @@ public class LoginActivity extends Activity {
                                 Session.setUserData(getApplicationContext(), id);
                                 Log.d("Session", "set user id : " + id);
                             }
-                            //Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class); //REST API 테스트
+                            Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
+//                            Intent intent = new Intent(getApplicationContext(), MainActivity.class); //REST API 테스트
 //                            intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
                             startActivity(intent);
                             LoginActivity.this.finish();
@@ -152,7 +152,7 @@ public class LoginActivity extends Activity {
 
         String result = login.post(json);
 //        Log.d("LOGIN", "result : " + result);
-        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시r
             Log.d("LOGIN", "TIMEOUT!!!!!");
 //            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
             LoginActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
