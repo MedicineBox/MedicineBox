@@ -85,7 +85,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0번"
                     android:textColor="#000000"
                     android:textSize="20sp" />
 
@@ -110,10 +109,12 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/signature"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:enabled="false"
+                    android:inputType="textPersonName"
+                    android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/textType"
+                    android:id="@+id/takeType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -379,7 +380,7 @@
                             android:background="@drawable/button"
                             android:gravity="center|start"
                             android:paddingLeft="20sp"
-                            android:text="-- --:--"
+                            android:text="AM 08 : 00"
                             android:textColor="#000"
                             android:textSize="20sp" />
                     </LinearLayout>
@@ -408,7 +409,7 @@
                             android:background="@drawable/button"
                             android:gravity="center|start"
                             android:paddingLeft="20sp"
-                            android:text="-- --:--"
+                            android:text="AM 08 : 00"
                             android:textColor="#000"
                             android:textSize="20sp" />
                     </LinearLayout>
@@ -437,7 +438,7 @@
                             android:background="@drawable/button"
                             android:gravity="center|start"
                             android:paddingLeft="20sp"
-                            android:text="-- --:--"
+                            android:text="AM 08 : 00"
                             android:textColor="#000"
                             android:textSize="20sp" />
                     </LinearLayout>
@@ -466,7 +467,7 @@
                             android:background="@drawable/button"
                             android:gravity="center|start"
                             android:paddingLeft="20sp"
-                            android:text="-- --:--"
+                            android:text="AM 08 : 00"
                             android:textColor="#000"
                             android:textSize="20sp" />
                     </LinearLayout>
@@ -495,7 +496,7 @@
                             android:background="@drawable/button"
                             android:gravity="center|start"
                             android:paddingLeft="20sp"
-                            android:text="-- --:--"
+                            android:text="AM 08 : 00"
                             android:textColor="#000"
                             android:textSize="20sp" />
                     </LinearLayout>

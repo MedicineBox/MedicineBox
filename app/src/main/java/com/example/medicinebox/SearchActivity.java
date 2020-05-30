@@ -72,6 +72,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra("search",editSearch.getText().toString()); //검색어 검색 결과화면으로 넘겨주기
                 startActivity(intent);
                 finish();
             }
@@ -116,6 +117,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        //결과 리스트에서 선택
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -206,7 +208,6 @@ public class SearchActivity extends AppCompatActivity {
 
                     case XmlPullParser.START_TAG:
                         tag= xpp.getName();//테그 이름 얻어오기
-
                         if(tag.equals("item")) ;// 첫번째 검색결과
                         else if(tag.equals("ITEM_NAME")){
                             buffer.append("품목명 : ");

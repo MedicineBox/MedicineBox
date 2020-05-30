@@ -64,98 +64,117 @@
                 android:textColor="#000000"
                 android:textSize="30sp" />
 
-            <TableLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:stretchColumns="*">
+                android:layout_height="match_parent">
 
-                <TableRow
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/signature">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-                    <TextView
+                    <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:background="#ffffff"
-                        android:gravity="center"
-                        android:text="식별"
-                        android:textAlignment="gravity"
-                        android:textColor="#000000"
-                        android:textSize="20sp"></TextView>
+                        android:layout_marginTop="20dp"
+                        android:stretchColumns="*">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:background="#ffffff"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/signature">
 
-                        <ImageView
-                            android:id="@+id/mediPhoto"
-                            android:layout_width="200dp"
-                            android:layout_height="100dp"
-                            android:layout_weight="0" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="1dp"
+                                android:background="#ffffff"
+                                android:gravity="center"
+                                android:text="식별"
+                                android:textAlignment="gravity"
+                                android:textColor="#000000"
+                                android:textSize="20sp"></TextView>
 
-                </TableRow>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="1dp"
+                                android:background="#ffffff"
+                                android:orientation="horizontal"
+                                android:padding="10dp">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/signature">
+                                <ImageView
+                                    android:id="@+id/mediPhoto"
+                                    android:layout_width="200dp"
+                                    android:layout_height="100dp"
+                                    android:layout_weight="0" />
+                            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:background="#ffffff"
-                        android:gravity="center"
-                        android:text="효능·효과"
-                        android:textColor="#000000"
-                        android:textSize="20sp"></TextView>
+                        </TableRow>
 
-                    <TextView
-                        android:id="@+id/mediEffect"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:background="#ffffff"
-                        android:padding="10dp"
-                        android:textColor="#000000"
-                        android:textSize="20sp"></TextView>
-                </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/signature">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/signature">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="1dp"
+                                android:background="#ffffff"
+                                android:gravity="center"
+                                android:text="효능·효과"
+                                android:textColor="#000000"
+                                android:textSize="20sp"></TextView>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:background="#ffffff"
-                        android:gravity="center"
-                        android:text="용법·용량"
-                        android:textColor="#000000"
-                        android:textSize="20sp"></TextView>
+                            <TextView
+                                android:id="@+id/mediEffect"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_margin="1dp"
+                                android:background="#ffffff"
+                                android:breakStrategy="high_quality"
+                                android:hyphenationFrequency="none"
+                                android:padding="10dp"
+                                android:singleLine="false"
+                                android:textColor="#000000"
+                                android:textSize="14sp"></TextView>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="1dp"
-                        android:background="#ffffff"
-                        android:padding="10dp"
-                        android:textColor="#000000"
-                        android:textSize="20sp"></TextView>
-                </TableRow>
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/signature">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="1dp"
+                                android:background="#ffffff"
+                                android:gravity="center"
+                                android:text="용법·용량"
+                                android:textColor="#000000"
+                                android:textSize="20sp"></TextView>
+
+                            <TextView
+                                android:id="@+id/mediUse"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_margin="1dp"
+                                android:background="#ffffff"
+                                android:breakStrategy="high_quality"
+                                android:padding="10dp"
+                                android:textColor="#000000"
+                                android:textSize="14sp"></TextView>
+
+                        </TableRow>
 
 
-            </TableLayout>
+                    </TableLayout>
+                </LinearLayout>
+            </ScrollView>
+
         </LinearLayout>
     </ScrollView>
 

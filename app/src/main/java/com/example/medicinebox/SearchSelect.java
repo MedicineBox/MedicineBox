@@ -5,28 +5,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class SearchSelect extends AppCompatActivity {
 
-    TextView mediName, mediEffect;
+    TextView mediName, mediEffect, mediUse;
     ImageView btnBack, btnHome, mediPhoto;
 
     int count = 0;
+
+    boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class SearchSelect extends AppCompatActivity {
 
         mediName = findViewById(R.id.mediName);
         mediEffect = findViewById(R.id.mediEffect);
+        mediUse = findViewById(R.id.mediUse);
         mediPhoto = findViewById(R.id.mediPhoto);
 
         //뒤로가기
@@ -61,13 +66,46 @@ public class SearchSelect extends AppCompatActivity {
         final String name = intent.getExtras().getString("name");
         mediName.setText(name);
 
-        Thread thread = new Thread(new Runnable() {
+        AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
             @Override
             public void run() {
                 try {
-                    URL imgurl = new URL(getXmlData(name));
-                    Log.i("imgurl", String.valueOf(imgurl));
-                    //Log.i("count", String.valueOf(count));
+                    flag = mediname(name);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("IN ASYNC", String.valueOf(flag));
+                if(flag) {
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                Log.i("imgurl", String.valueOf(imgurl));
+                                InputStream is = imgurl.openStream();
+                                final Bitmap bm = BitmapFactory.decodeStream(is);
+                                SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                                    @Override
+                                    public void run() {
+                                        mediPhoto.setImageBitmap(bm);
+                                    }
+                                });
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread.start();
+                } else {
+                    Thread thread2 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                URL imgurl = new URL(getXmlData(name));
+                                Log.i("imgurl", String.valueOf(imgurl));
+                                //Log.i("count", String.valueOf(count));
                     /*if (imgurl.equals(0)) {
                         SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                             @Override
@@ -76,22 +114,73 @@ public class SearchSelect extends AppCompatActivity {
                             }
                         });
                     } else {*/
-                        InputStream is = imgurl.openStream();
-                        final Bitmap bm = BitmapFactory.decodeStream(is);
-                        SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
-                            @Override
-                            public void run() {
-                                mediPhoto.setImageBitmap(bm);
-                            }
-                        });
+                                InputStream is = imgurl.openStream();
+                                final Bitmap bm = BitmapFactory.decodeStream(is);
+                                SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                                    @Override
+                                    public void run() {
+                                        mediPhoto.setImageBitmap(bm);
+                                    }
+                                });
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread2.start();
                 }
             }
         });
+    }
 
-        thread.start();
+
+    private boolean mediname(String name) throws JSONException {
+
+        REST_API mediname = new REST_API("mediname");
+
+        String json = "{\"name\" : \"" + name + "\"}";
+
+        String result = mediname.post(json);
+        Log.d("MEDIname", "result : " + result); //쿼리 결과값
+
+        String medi_photo = null;
+        String medi_effect = null;
+        String medi_use = null;
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("MEDIname", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else if (jsonArray.length() == 0) {
+            mediUse.setText("1일 1회 1정");
+            return false;
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                medi_photo = jsonObject.getString("medi_photo");
+                medi_effect = jsonObject.getString("medi_effect");
+                medi_use = jsonObject.getString("medi_use");
+
+
+                mediEffect.setText(medi_effect);
+                mediUse.setText(medi_use);
+
+            }
+            return true;
+        }
+
+        return false;
     }
 
     String getXmlData(String word){
@@ -112,6 +201,7 @@ public class SearchSelect extends AppCompatActivity {
             xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
 
             String tag;
+            String count;
 
             xpp.next();
             int eventType= xpp.getEventType();
@@ -125,6 +215,11 @@ public class SearchSelect extends AppCompatActivity {
 
                     case XmlPullParser.START_TAG:
                         tag= xpp.getName();//테그 이름 얻어오기
+                        /*if(tag.equals("totalCount")) {
+                            xpp.next();
+                            count = xpp.getText();
+
+                        }*/
                         if(tag.equals("item"));// 첫번째 검색결과
                         else if(tag.equals("ITEM_IMAGE")){
                             //buffer.append("큰제품이미지 : ");
@@ -166,4 +261,5 @@ public class SearchSelect extends AppCompatActivity {
         return buffer.toString();//StringBuffer 문자열 객체 반환
 
     }//getXmlData method....
+
 }

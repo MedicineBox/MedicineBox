@@ -22,6 +22,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class AddMediActivity extends AppCompatActivity {
 
     int daySunVal = 0, dayMonVal = 0, dayTueVal = 0, dayWedVal = 0, dayThuVal = 0, dayFriVal = 0, daySatVal = 0;
@@ -360,11 +364,24 @@ public class AddMediActivity extends AppCompatActivity {
         });
 
 
+
+        Date today = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        TimeZone time = TimeZone.getTimeZone("Asia/Seoul");
+        format.setTimeZone(time);
+        String date = format.format(today);
+        Log.i("date", date);
+        String[] splitText = date.split("-");
+        final int year = Integer.parseInt(splitText[0]);
+        final int month = Integer.parseInt(splitText[1]);
+        final int day = Integer.parseInt(splitText[2]);
+
+
         //사용기한 설정
         btnExpiredate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddMediActivity.this, new DatePickerDialog.OnDateSetListener(){
+                DatePickerDialog datedialog = new DatePickerDialog(AddMediActivity.this,android.R.style.Theme_Holo_Light_Dialog , new DatePickerDialog.OnDateSetListener(){
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -373,8 +390,11 @@ public class AddMediActivity extends AppCompatActivity {
                         d = dayOfMonth;
                         btnExpiredate.setText(y+" - "+m+" - "+d);
                     }
-                }, 2020, 1, 1).show();
-                Log.d("TAG", "onClick: asd");
+                }, year, month-1, day);
+
+                datedialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                datedialog.show();
+                //Log.d("TAG", "onClick: asd");
             }
         });
 

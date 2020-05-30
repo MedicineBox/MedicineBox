@@ -8,37 +8,144 @@ import androidx.appcompat.widget.PopupMenu;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class StoreActivity extends AppCompatActivity {
 
+    String id;
+
     ImageView btnBack, btnMenu;
+
+    TextView mediName, mediSlot, mediEffect, mediUse;
+    ImageView mediPhoto;
+
+    TextView takeType, takeDay, takeFre, takeTime1, takeTime2, takeTime3, takeTime4, takeTime5, takeExpire, storageNum;
+    LinearLayout Takelayout, Timelayout;
+
     FloatingActionButton btnPilladd;
+
+    boolean flag = false;
+    boolean flag2 = false;
+    boolean flag3 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_activity);
 
+        // 세션 id 받아오기
+        id = Session.getUserData(getApplicationContext());
+
         btnBack = findViewById(R.id.btnBack);
         btnMenu = findViewById(R.id.btnMenu);
         btnPilladd = findViewById(R.id.btnPilladd);
+
+        mediName = findViewById(R.id.mediName);
+        mediSlot = findViewById(R.id.slot);
+        mediEffect = findViewById(R.id.mediEffect);
+        mediUse = findViewById(R.id.mediUse);
+        mediPhoto = findViewById(R.id.mediPhoto);
+
+        takeType = findViewById(R.id.takeType);
+        takeDay = findViewById(R.id.takeDay);
+        takeFre = findViewById(R.id.takeFre);
+        takeTime1 = findViewById(R.id.takeTime1);
+        takeTime2 = findViewById(R.id.takeTime2);
+        takeTime3 = findViewById(R.id.takeTime3);
+        takeTime4 = findViewById(R.id.takeTime4);
+        takeTime5 = findViewById(R.id.takeTime5);
+        takeExpire = findViewById(R.id.takeExpire);
+        storageNum = findViewById(R.id.storageNum);
+
+        Takelayout = findViewById(R.id.Takelayout);
+        Timelayout = findViewById(R.id.Timelayout);
 
         //뒤로가기
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        Intent intent = getIntent();
+        final String num = intent.getExtras().getString("num");
+        final String name = intent.getExtras().getString("name");
+        final String slot = intent.getExtras().getString("slot");
+        mediName.setText(name);
+        mediSlot.setText(slot+"번");
+
+        if (slot.equals("7")) {
+            Takelayout.setVisibility(View.GONE);
+            Timelayout.setVisibility(View.GONE);
+            btnPilladd.setVisibility(View.GONE);
+        }
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                    Log.i("imgurl", String.valueOf(imgurl));
+                    InputStream is = imgurl.openStream();
+                    final Bitmap bm = BitmapFactory.decodeStream(is);
+                    StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                        @Override
+                        public void run() {
+                            mediPhoto.setImageBitmap(bm);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    flag = mediname(name);
+                    flag2 = expireload(slot);
+                    flag3 = takedetail(id, num);
+                    takeday(id, num);
+                    taketime(id, num);
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.d("IN ASYNC", String.valueOf(flag));
             }
         });
 
@@ -60,8 +167,20 @@ public class StoreActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.store_edit:
-                                Toast.makeText(getApplication(),"수정하기",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplication(),"수정하기",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), EditMediActivity.class);
+                                intent.putExtra("num", num);
+                                intent.putExtra("name", mediName.getText().toString());
+                                intent.putExtra("slot", slot);
+                                intent.putExtra("storageNum",storageNum.getText().toString());
+                                intent.putExtra("type", takeType.getText().toString());
+                                intent.putExtra("fre", takeFre.getText().toString());
+                                intent.putExtra("expire", takeExpire.getText().toString());
+                                intent.putExtra("time1", takeTime1.getText().toString());
+                                intent.putExtra("time2", takeTime2.getText().toString());
+                                intent.putExtra("time3", takeTime3.getText().toString());
+                                intent.putExtra("time4", takeTime4.getText().toString());
+                                intent.putExtra("time5", takeTime5.getText().toString());
                                 startActivity(intent);
                                 break;
                             case R.id.store_delete:
@@ -113,5 +232,244 @@ public class StoreActivity extends AppCompatActivity {
         tabHost.addTab(ts2) ;
 
 
+    }
+
+    private boolean mediname(String name) throws JSONException {
+
+        REST_API mediname = new REST_API("mediname");
+
+        String json = "{\"name\" : \"" + name + "\"}";
+
+        String result = mediname.post(json);
+        Log.d("MEDIname", "result : " + result); //쿼리 결과값
+
+        String medi_photo = null;
+        String medi_effect = null;
+        String medi_use = null;
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("MEDIname", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else if (jsonArray.length() == 0) {
+            mediUse.setText("1일 1회 1정");
+            return false;
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                medi_photo = jsonObject.getString("medi_photo");
+                medi_effect = jsonObject.getString("medi_effect");
+                medi_use = jsonObject.getString("medi_use");
+
+
+                mediEffect.setText(medi_effect);
+                mediUse.setText(medi_use);
+
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean expireload(String slot) throws JSONException, ParseException {
+
+        SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        old_format.setTimeZone(TimeZone.getTimeZone("KST"));
+        SimpleDateFormat new_format = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+        REST_API expireload = new REST_API("expireload");
+
+        String json = "{\"slot\" : \"" + slot + "\"}";
+
+        String result = expireload.post(json);
+        Log.d("Expire", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("Expire", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String storage_expire = jsonObject.getString("storage_expire");
+                String storage_num = jsonObject.getString("storage_num");
+                Date old_date = old_format.parse(storage_expire);
+                old_date.setTime ( old_date.getTime ( ) + ( (long) 1000 * 60 * 60 * 24 ) );
+                String new_date = new_format.format(old_date);
+                Log.i("expire", new_date);
+                takeExpire.setText(new_date);
+                storageNum.setText(storage_num);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean takedetail(String id, String num) throws JSONException, ParseException {
+
+        REST_API takedetail = new REST_API("takedetail");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";
+
+        String result = takedetail.post(json);
+        Log.d("takedetail", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("takedetail", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String take_type = jsonObject.getString("take_type");
+                String take_fre = jsonObject.getString("take_fre");
+
+                takeType.setText(take_type);
+                takeFre.setText(take_fre+"번");
+                //takeDay.append(take_day+" ");
+                //takeTime1.setText(take_time);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean takeday(String id, String num) throws JSONException, ParseException {
+
+        REST_API takeday = new REST_API("takeday");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";
+
+        String result = takeday.post(json);
+        Log.d("takeday", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("takeday", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String take_day = jsonObject.getString("take_day");
+
+                takeDay.append(take_day+" ");
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean taketime(String id, String num) throws JSONException, ParseException {
+
+        REST_API taketime = new REST_API("taketime");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";
+
+        String result = taketime.post(json);
+        Log.d("taketime", "result : " + result); //쿼리 결과값
+
+        ArrayList<String> timeArray = new ArrayList<>();
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("taketime", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String take_time = jsonObject.getString("take_time");
+
+                timeArray.add(take_time);
+            }
+
+            if (timeArray.size() == 1){
+                takeTime1.setText(timeArray.get(0));
+            } else if (timeArray.size() == 2) {
+                takeTime2.setVisibility(View.VISIBLE);
+
+                takeTime1.setText(timeArray.get(0));
+                takeTime2.setText(timeArray.get(1));
+            } else if (timeArray.size() == 3) {
+                takeTime2.setVisibility(View.VISIBLE);
+                takeTime3.setVisibility(View.VISIBLE);
+
+                takeTime1.setText(timeArray.get(0));
+                takeTime2.setText(timeArray.get(1));
+                takeTime3.setText(timeArray.get(2));
+            } else if (timeArray.size() == 4) {
+                takeTime2.setVisibility(View.VISIBLE);
+                takeTime3.setVisibility(View.VISIBLE);
+                takeTime4.setVisibility(View.VISIBLE);
+
+                takeTime1.setText(timeArray.get(0));
+                takeTime2.setText(timeArray.get(1));
+                takeTime3.setText(timeArray.get(2));
+                takeTime4.setText(timeArray.get(3));
+            } else if (timeArray.size() == 5) {
+                takeTime2.setVisibility(View.VISIBLE);
+                takeTime3.setVisibility(View.VISIBLE);
+                takeTime4.setVisibility(View.VISIBLE);
+                takeTime5.setVisibility(View.VISIBLE);
+
+                takeTime1.setText(timeArray.get(0));
+                takeTime2.setText(timeArray.get(1));
+                takeTime3.setText(timeArray.get(2));
+                takeTime4.setText(timeArray.get(3));
+                takeTime5.setText(timeArray.get(4));
+            }
+            return true;
+        }
+
+        return false;
     }
 }
