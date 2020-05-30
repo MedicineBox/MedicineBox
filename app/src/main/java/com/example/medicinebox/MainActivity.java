@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainactivity);
 
-        new AlarmHATT(getApplicationContext()).Alarm();
-
         editSearch = findViewById(R.id.editSearch);
         btnSetting = findViewById(R.id.btnSetting);
         btnSearch = findViewById(R.id.btnSearch);
@@ -227,6 +225,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    ArrayList<String> timeloadArray = timeload(id, day);
+                    Log.i("timeloadArray", String.valueOf(timeloadArray));
+
+                    // 푸시알림
+                    int k;
+                    for (k = 0; k < timeloadArray.size(); k++) {
+                        new AlarmHATT(getApplicationContext()).Alarm(timeloadArray.get(k));
+                    }
+
                     ArrayList<String> takeloadArray = takeload(id, day);
                     Log.i("takeloadArray", String.valueOf(takeloadArray));
 
@@ -603,27 +610,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public class AlarmHATT {
-        private Context context;
-        public AlarmHATT(Context context) {
-            this.context=context;
-        }
-        public void Alarm() {
-            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(MainActivity.this, BroadcastD.class);
-
-            PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
-
-            Calendar calendar = Calendar.getInstance();
-            //알람시간 calendar에 set해주기
-
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 12, 18, 0);
-
-            //알람 예약
-            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        }
-    }
-
 
 //    키보드 숨김
     public void hideKeyboard() {
@@ -673,6 +659,50 @@ public class MainActivity extends AppCompatActivity {
         } else if(result != null) {
             Log.d("Takeload", "SUCCESS!!!!!");
             return takeArray;
+        }
+
+        return null;
+    }
+
+    private ArrayList<String> timeload(String id, String day) throws JSONException {
+        REST_API timeload = new REST_API("timeload");
+
+        String json = "{\"id\" : \"" + id + "\", \"day\" : \"" + day + "\"}";
+
+        String result = timeload.post(json);
+
+        ArrayList<String> timeArray = new ArrayList<>();
+
+        Log.d("timeload", "result : " + result);
+        JSONArray jsonArray = new JSONArray(result);
+
+        for(int i = 0 ; i<jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String take_time = jsonObject.getString("take_time");
+            timeArray.add(take_time);
+        }
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("timeload", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("timeload", "FAIL!!!!!");
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "보관의약품이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return null;
+        } else if(result != null) {
+            Log.d("timeload", "SUCCESS!!!!!");
+            return timeArray;
         }
 
         return null;
@@ -801,5 +831,34 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return null;
+    }
+
+    //푸시 알림
+    public class AlarmHATT {
+        private Context context;
+        public AlarmHATT(Context context) {
+            this.context=context;
+        }
+        public void Alarm(String time) {
+            String[] split = time.split(":");
+
+            int hour = Integer.parseInt(split[0]);
+            int min = Integer.parseInt(split[1]);
+
+            Log.i("hour", String.valueOf(hour));
+            Log.i("min", String.valueOf(min));
+
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(MainActivity.this, BroadcastD.class);
+
+            PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), hour, min, 0);
+
+            //알람 예약
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        }
     }
 }
