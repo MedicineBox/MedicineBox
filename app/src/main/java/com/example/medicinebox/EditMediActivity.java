@@ -112,6 +112,8 @@ public class EditMediActivity extends AppCompatActivity {
         final String slot = intent.getExtras().getString("slot");
         final String storageNum = intent.getExtras().getString("storageNum");
         String type = intent.getExtras().getString("type");
+        String start = intent.getExtras().getString("start");
+        String cycle = intent.getExtras().getString("cycle");
         String fre = intent.getExtras().getString("fre");
         String expire = intent.getExtras().getString("expire");
 
@@ -164,6 +166,34 @@ public class EditMediActivity extends AppCompatActivity {
             btnDay.setTextColor(Color.BLACK);
             layoutCycle.setVisibility(View.VISIBLE);
             layoutDay.setVisibility(View.GONE);
+
+            start = start.replace("년"," -");
+            start = start.replace("월", " -");
+            start = start.replace("일", "");
+            btnStartdate.setText(start);
+
+            if (cycle.equals("1일")) {
+                spinCycle.setSelection(0);
+            } else if (cycle.equals("2일")) {
+                spinCycle.setSelection(1);
+            } else if (cycle.equals("3일")) {
+                spinCycle.setSelection(2);
+            } else if (cycle.equals("4일")) {
+                spinCycle.setSelection(3);
+            } else if (cycle.equals("5일")) {
+                spinCycle.setSelection(4);
+            } else if (cycle.equals("6일")) {
+                spinCycle.setSelection(5);
+            } else if (cycle.equals("7일")) {
+                spinCycle.setSelection(6);
+            } else if (cycle.equals("8일")) {
+                spinCycle.setSelection(7);
+            } else if (cycle.equals("9일")) {
+                spinCycle.setSelection(8);
+            } else if (cycle.equals("10일")) {
+                spinCycle.setSelection(9);
+            }
+
         }
 
         AsyncTask.execute(new Runnable() {
@@ -375,7 +405,6 @@ public class EditMediActivity extends AppCompatActivity {
                     case 1:
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.VISIBLE);
-                        btnAddTime2.setText("AM 08 : 00");
                         lAddTime3.setVisibility(View.GONE);
                         lAddTime4.setVisibility(View.GONE);
                         lAddTime5.setVisibility(View.GONE);
@@ -384,8 +413,6 @@ public class EditMediActivity extends AppCompatActivity {
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.VISIBLE);
                         lAddTime3.setVisibility(View.VISIBLE);
-                        btnAddTime2.setText("AM 08 : 00");
-                        btnAddTime3.setText("AM 08 : 00");
                         lAddTime4.setVisibility(View.GONE);
                         lAddTime5.setVisibility(View.GONE);
                         break;
@@ -394,9 +421,6 @@ public class EditMediActivity extends AppCompatActivity {
                         lAddTime2.setVisibility(View.VISIBLE);
                         lAddTime3.setVisibility(View.VISIBLE);
                         lAddTime4.setVisibility(View.VISIBLE);
-                        btnAddTime2.setText("AM 08 : 00");
-                        btnAddTime3.setText("AM 08 : 00");
-                        btnAddTime4.setText("AM 08 : 00");
                         lAddTime5.setVisibility(View.GONE);
                         break;
                     case 4:
@@ -405,10 +429,6 @@ public class EditMediActivity extends AppCompatActivity {
                         lAddTime3.setVisibility(View.VISIBLE);
                         lAddTime4.setVisibility(View.VISIBLE);
                         lAddTime5.setVisibility(View.VISIBLE);
-                        btnAddTime2.setText("AM 08 : 00");
-                        btnAddTime3.setText("AM 08 : 00");
-                        btnAddTime4.setText("AM 08 : 00");
-                        btnAddTime5.setText("AM 08 : 00");
                         break;
                     default:
                         break;
@@ -653,7 +673,7 @@ public class EditMediActivity extends AppCompatActivity {
         String t = time;
 
         if (t == null | t.equals("")) {
-            t = null;
+            t = "AM 08 : 00";
         } else {
             String[] splitText = time.split(":");
             String hour = splitText[0];
@@ -661,9 +681,9 @@ public class EditMediActivity extends AppCompatActivity {
 
             int h = Integer.parseInt(hour);
 
-            if (h > 12 && h < 24) {
+            if (h > 12 && h < 22) {
                 t = "PM " + "0"+ (h-12) + " : " + min;
-            } else if (h == 24) {
+            } else if (h > 21 && h < 25) {
                 t = "PM " + (h-12) + " : " + min;
             } else {
                 t = "AM " + hour + " : " + min;

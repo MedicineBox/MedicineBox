@@ -172,16 +172,14 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:text="복용"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal"></LinearLayout>
+
                 </TableRow>
 
                 <TableRow
@@ -247,16 +245,36 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk1"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/time1_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/time1_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/time1_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
                 </TableRow>
 
                 <TableRow
@@ -322,16 +340,35 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk2"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/time2_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/time2_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/time2_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
                 </TableRow>
 
                 <TableRow
@@ -397,16 +434,35 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk3"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/time3_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/time3_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/time3_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
                 </TableRow>
 
                 <TableRow
@@ -472,16 +528,13 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk4"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal"></LinearLayout>
                 </TableRow>
 
                 <TableRow
@@ -547,16 +600,13 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk5"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal"></LinearLayout>
                 </TableRow>
 
                 <TableRow
@@ -622,16 +672,13 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk6"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal"></LinearLayout>
                 </TableRow>
 
                 <TableRow
@@ -697,16 +744,13 @@
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/takeChk7"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="#ffffff"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal"></LinearLayout>
                 </TableRow>
 
             </TableLayout>
