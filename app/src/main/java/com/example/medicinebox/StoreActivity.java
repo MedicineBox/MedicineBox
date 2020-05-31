@@ -48,7 +48,7 @@ public class StoreActivity extends AppCompatActivity {
     TextView mediName, mediSlot, mediEffect, mediUse;
     ImageView mediPhoto;
 
-    TextView takeType, takeDay, takeFre, takeTime1, takeTime2, takeTime3, takeTime4, takeTime5, takeExpire, storageNum;
+    TextView takeType, textDay, takeDay, textStart, takeStart, textCycle, takeCycle, takeFre, takeTime1, takeTime2, takeTime3, takeTime4, takeTime5, takeExpire, storageNum;
     LinearLayout Takelayout, Timelayout;
 
     FloatingActionButton btnPilladd;
@@ -76,7 +76,12 @@ public class StoreActivity extends AppCompatActivity {
         mediPhoto = findViewById(R.id.mediPhoto);
 
         takeType = findViewById(R.id.takeType);
+        textDay = findViewById(R.id.textDay);
         takeDay = findViewById(R.id.takeDay);
+        textStart = findViewById(R.id.textStart);
+        takeStart = findViewById(R.id.takeStart);
+        textCycle = findViewById(R.id.textCycle);
+        takeCycle = findViewById(R.id.takeCycle);
         takeFre = findViewById(R.id.takeFre);
         takeTime1 = findViewById(R.id.takeTime1);
         takeTime2 = findViewById(R.id.takeTime2);
@@ -140,7 +145,17 @@ public class StoreActivity extends AppCompatActivity {
                     flag = mediname(name);
                     flag2 = expireload(slot);
                     flag3 = takedetail(id, num);
-                    takeday(id, num);
+                    if (takeType.getText().equals("요일별")) {
+                        textStart.setVisibility(View.GONE);
+                        takeStart.setVisibility(View.GONE);
+                        textCycle.setVisibility(View.GONE);
+                        takeCycle.setVisibility(View.GONE);
+                        takeday(id, num);
+                    } else if (takeType.getText().equals("주기별")) {
+                        textDay.setVisibility(View.GONE);
+                        takeDay.setVisibility(View.GONE);
+                        takecycle(id, num);
+                    }
                     taketime(id, num);
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -174,6 +189,8 @@ public class StoreActivity extends AppCompatActivity {
                                 intent.putExtra("slot", slot);
                                 intent.putExtra("storageNum",storageNum.getText().toString());
                                 intent.putExtra("type", takeType.getText().toString());
+                                intent.putExtra("start", takeStart.getText().toString());
+                                intent.putExtra("cycle", takeCycle.getText().toString());
                                 intent.putExtra("fre", takeFre.getText().toString());
                                 intent.putExtra("expire", takeExpire.getText().toString());
                                 intent.putExtra("time1", takeTime1.getText().toString());
@@ -314,7 +331,8 @@ public class StoreActivity extends AppCompatActivity {
                 String storage_expire = jsonObject.getString("storage_expire");
                 String storage_num = jsonObject.getString("storage_num");
                 Date old_date = old_format.parse(storage_expire);
-                old_date.setTime ( old_date.getTime ( ) + ( (long) 1000 * 60 * 60 * 24 ) );
+                //old_date.setTime ( old_date.getTime ( ) + ( (long) 1000 * 60 * 60 * 24 ) );
+                old_date.setTime ( old_date.getTime ());
                 String new_date = new_format.format(old_date);
                 Log.i("expire", new_date);
                 takeExpire.setText(new_date);
@@ -393,6 +411,51 @@ public class StoreActivity extends AppCompatActivity {
                 String take_day = jsonObject.getString("take_day");
 
                 takeDay.append(take_day+" ");
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean takecycle(String id, String num) throws JSONException, ParseException {
+
+        SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        old_format.setTimeZone(TimeZone.getTimeZone("KST"));
+        SimpleDateFormat new_format = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+        REST_API takecycle = new REST_API("takecycle");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";
+
+        String result = takecycle.post(json);
+        Log.d("takecycle", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("takecycle", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String take_start = jsonObject.getString("take_start");
+                String take_cycle = jsonObject.getString("take_cycle");
+
+                Date old_date = old_format.parse(take_start);
+                old_date.setTime ( old_date.getTime () );
+                String new_date = new_format.format(old_date);
+
+                takeStart.setText(new_date);
+                takeCycle.setText(take_cycle+"일");
             }
             return true;
         }
