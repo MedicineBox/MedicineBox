@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 //    firebase 관련
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    String id;
+    private String id, device_ip;
 
     TextView editSearch;
     TextView slotNum1, slotNum2, slotNum3, slotNum4, slotNum5, slotNum6, slotNum7;
@@ -122,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
         baselayout = findViewById(R.id.main_baselayout);
 
         // 세션 id 받아오기
-        id = Session.getUserData(getApplicationContext());
+        id = Session.getUserID(getApplicationContext());
+        device_ip = Session.getDeviceIP(getApplicationContext());
 
         Toast.makeText(getApplicationContext(),id+"님 안녕하세요!", Toast.LENGTH_SHORT).show();
 
@@ -608,6 +609,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+
+        Toast.makeText(getApplicationContext(), "Device IP : " + device_ip, Toast.LENGTH_SHORT).show();
+
     }
 
 

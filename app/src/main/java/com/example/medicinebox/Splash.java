@@ -19,7 +19,7 @@ public class Splash extends Activity {
 
         Handler hd = new Handler();
 
-        if(Session.getUserData(getApplicationContext()).length() != 0) {// 로그인 정보가 있을 때
+        if(Session.getUserID(getApplicationContext()).length() != 0) {// 로그인 정보가 있을 때
             //Log.d("session : ",Session.getUserData(getApplicationContext()));
             login = true;
         }

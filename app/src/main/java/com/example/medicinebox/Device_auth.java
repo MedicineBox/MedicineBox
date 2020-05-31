@@ -1,27 +1,9 @@
 package com.example.medicinebox;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,17 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.google.common.primitives.Bytes;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import org.json.JSONObject;
+
 
 public class Device_auth extends Activity {
 
@@ -92,7 +68,7 @@ public class Device_auth extends Activity {
         wifi_id = getIntent.getStringExtra("wifi_id");
         wifi_pw = getIntent.getStringExtra("wifi_pw");
         device_id = getIntent.getStringExtra("device_id");
-        user_id = Session.getUserData(getApplicationContext());
+        user_id = Session.getUserID(getApplicationContext());
         step = 1;
 
 
@@ -110,13 +86,28 @@ public class Device_auth extends Activity {
             @Override
             public void run() {
 //                while(true) {
-                    if(!syncDevice(device_id)){
-                        toastMsg("서버에서 디바이스 접속 상태를 다시 확인중입니다.");
-                        handler.postDelayed(null, 1000);
-                    } else {
-                        updateProgressStage(3);
+//                    if(!syncDevice(device_id)){
+//                        toastMsg("서버에서 디바이스 접속 상태를 다시 확인중입니다.");
+//                        handler.postDelayed(null, 1000);
+//                    } else {
+//                        updateProgressStage(3);
+//                    }
+////                }
+
+                try {
+                    while (true) {
+                        if(getDeviceIp(device_id)) {
+                            Log.d(TAG, "tStep4 : getDeviceIP SUCCESS!");
+                            updateProgressStage(3);
+                            break;
+                        } else {
+                            Log.d(TAG, "tStep4: RETRYING to GET device IP..");
+                            Thread.sleep(500);
+                        }
                     }
-//                }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -124,14 +115,23 @@ public class Device_auth extends Activity {
             @Override
             public void run() {
                 try {
+                    while(true) {
+                        if (deleteServerWifi(device_id)) {
+                            Log.d(TAG, "tStep4 : delete wifi info on server SUCCESS!");
+                            break;
+                        } else {
+                            Log.d(TAG, "tStep4: RETRYING to DELETE Wifi info on server..");
+                            Thread.sleep(500);
+                        }
+                    }
                     Log.d(TAG, "tStep4: UPDATE USER DATA!!!");
                     while (true) {
                         if (updateUserdata(user_id, device_id)) {
-                            Log.d(TAG, "onResume: UPDATE SUCCESS!!!");
+                            Log.d(TAG, "tStep4: UPDATE UserData SUCCESS!!!");
                             updateProgressStage(4);
                             break;
                         } else {
-                            Log.d(TAG, "tStep4: RETRYING..");
+                            Log.d(TAG, "tStep4: RETRYING to UPDATE UserData..");
                             Thread.sleep(500);
                         }
                     }
@@ -254,9 +254,63 @@ public class Device_auth extends Activity {
             toastMsg("정보 업데이트 실패 ");
             return false;
         }
-
     }
 
+    private boolean getDeviceIp(String device_id) {
+        String param = "device_id=" + device_id;
+
+        REST_API conn_server = new REST_API("deviceIp");
+        String result = "";
+        int num = 0;
+
+        try {
+            while (true) {
+                if (num > 10) {
+                    break;
+                } else {
+                    result = conn_server.get(param);
+                    if(result.contains("[")) {
+                        result = result.replace("[", "");
+                    }
+                    if(result.contains("]")) {
+                        result = result.replace("]", "");
+                    }
+                    JSONObject jsonObject = new JSONObject(result);
+                    String device_ip = jsonObject.getString("device_ip");
+
+                    if(device_ip.equals("") || device_ip == null) {
+                        Thread.sleep(2000);
+                        num++;
+                    } else {
+                        Log.e("received device ip : ", device_ip);
+                        Session.setDeviceIP(getApplicationContext(), device_ip);
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
+    private boolean deleteServerWifi(String device_id) {
+        String param = "device_id=" + device_id;
+        String json = "{ \"device_id\" : \"" + device_id + "\" }";
+
+        REST_API conn_server = new REST_API("wifi");
+        String result = conn_server.delete(json);
+        result = result.trim();
+
+        Log.d(TAG, "deleteServerWifi:"+result);
+        if(result.equals("true")) {
+            return true;
+        } else {
+            Log.e(TAG, "Fail to DELETE WIFI INFO on SERVER");
+            return false;
+        }
+    }
 
     private void toastMsg(final String msg) {
         runOnUiThread(new Runnable() {

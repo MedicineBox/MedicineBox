@@ -64,7 +64,7 @@ public class SettingActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
             @Override
             public void run() {
-                id = Session.getUserData(getApplicationContext());
+                id = Session.getUserID(getApplicationContext());
                 try {
                     alarm = alarmload(id);
                 } catch (JSONException e) {
@@ -102,7 +102,7 @@ public class SettingActivity extends AppCompatActivity {
                     AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
                         @Override
                         public void run() {
-                            id = Session.getUserData(getApplicationContext());
+                            id = Session.getUserID(getApplicationContext());
                             flag = alarmedit(id, 1);
                             Log.d("IN ASYNC", String.valueOf(flag));
                             if(flag){
@@ -120,7 +120,7 @@ public class SettingActivity extends AppCompatActivity {
                     AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
                         @Override
                         public void run() {
-                            id = Session.getUserData(getApplicationContext());
+                            id = Session.getUserID(getApplicationContext());
                             flag = alarmedit(id, 0);
                             Log.d("IN ASYNC", String.valueOf(flag));
                             if(flag){

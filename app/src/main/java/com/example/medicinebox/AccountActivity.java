@@ -57,7 +57,7 @@ public class AccountActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {          // 비동기 방식으로 해야된됨. 안그럼 잘 안됨.
             @Override
             public void run() {
-                id = Session.getUserData(getApplicationContext());
+                id = Session.getUserID(getApplicationContext());
                 try {
                     flag = accountload(id);
                 } catch (JSONException e) {
@@ -80,8 +80,8 @@ public class AccountActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("session",Session.getUserData(getApplicationContext()));
-                id = Session.getUserData(getApplicationContext());
+                Log.d("session",Session.getUserID(getApplicationContext()));
+                id = Session.getUserID(getApplicationContext());
                 name = editName.getText().toString();
                 oldpwd = editOldpwd.getText().toString();
                 newpwd = editNewpwd.getText().toString();
