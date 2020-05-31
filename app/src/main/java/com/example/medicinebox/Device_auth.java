@@ -277,8 +277,9 @@ public class Device_auth extends Activity {
                     }
                     JSONObject jsonObject = new JSONObject(result);
                     String device_ip = jsonObject.getString("device_ip");
+                    device_ip = device_ip.trim();
 
-                    if(device_ip.equals("") || device_ip == null) {
+                    if(device_ip.equals("") || device_ip == null || device_ip.equals("null")) {
                         Thread.sleep(2000);
                         num++;
                     } else {
