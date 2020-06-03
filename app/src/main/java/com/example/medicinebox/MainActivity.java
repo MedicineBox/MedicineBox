@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 //    firebase 관련
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    String id;
+    private String id, device_ip;
+    private final static String TAG = ConnDevice.class.getSimpleName();
 
     TextView editSearch;
     TextView slotNum1, slotNum2, slotNum3, slotNum4, slotNum5, slotNum6, slotNum7;
@@ -140,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
         baselayout = findViewById(R.id.main_baselayout);
 
         // 세션 id 받아오기
-        id = Session.getUserData(getApplicationContext());
+        id = Session.getUserID(getApplicationContext());
+        device_ip = Session.getDeviceIP(getApplicationContext());
 
         Toast.makeText(getApplicationContext(),id+"님 안녕하세요!", Toast.LENGTH_SHORT).show();
 
@@ -600,20 +602,36 @@ public class MainActivity extends AppCompatActivity {
                     boolean diff3_3 = diffTime(ctime, take3_3);
 
                     if (diff1_1 == true | diff1_2 == true | diff1_3 == true) { // 복용할 약 있는 경우
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("복용 하시겠습니까?")
-                                .setMessage(mediName1.getText())
-                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which){
-                                        // slot 1 복용 신호 송신
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("복용 하시겠습니까?");
+                        builder.setMessage(mediName1.getText());
+                        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // slot 1 복용 신호 송신
+                                Log.e(TAG, "slot 1 복용 ");
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                                        try {
+                                            Log.d(TAG, "slot 1 dosing run()");
+                                            connDevice.dosing(1);
+                                        } catch (NullPointerException n) {
+                                            n.printStackTrace();
+                                            Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
 
-                                    }
-                                })
-                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which){
-                                    }
-                                })
-                                .show();
+                            }
+                        });
+                        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        builder.show();
                     } else if (diff2_1 == true | diff2_2 == true | diff2_3 == true) {
                         new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("복용 하시겠습니까?")
@@ -621,6 +639,21 @@ public class MainActivity extends AppCompatActivity {
                                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which){
                                         // slot 2 복용 신호 송신
+                                        AsyncTask.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                                                try {
+                                                    Log.d(TAG, "slot 2 dosing run()");
+                                                    connDevice.dosing(2);
+                                                } catch (NullPointerException n) {
+                                                    n.printStackTrace();
+                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
 
                                     }
                                 })
@@ -636,7 +669,21 @@ public class MainActivity extends AppCompatActivity {
                                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which){
                                         // slot 3 복용 신호 송신
-
+                                        AsyncTask.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                                                try {
+                                                    Log.d(TAG, "slot 3 dosing run()");
+                                                    connDevice.dosing(3);
+                                                } catch (NullPointerException n) {
+                                                    n.printStackTrace();
+                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
                                     }
                                 })
                                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -760,6 +807,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+
+        Toast.makeText(getApplicationContext(), "Device IP : " + device_ip, Toast.LENGTH_SHORT).show();
+
     }
 
     // 현재시간과 복용 시간 비교
@@ -1360,4 +1412,5 @@ public class MainActivity extends AppCompatActivity {
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         }
     }
+
 }

@@ -53,7 +53,7 @@ public class LeaveActivity extends AppCompatActivity {
         btnLeave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = Session.getUserData(getApplicationContext());
+                id = Session.getUserID(getApplicationContext());
                 passwd = editPwd.getText().toString();
 
                 if(passwd.equals("")) {

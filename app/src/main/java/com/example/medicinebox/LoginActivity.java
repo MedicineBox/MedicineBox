@@ -114,12 +114,12 @@ public class LoginActivity extends Activity {
                         flag = login(id, passwd);
                         Log.d("IN ASYNC", String.valueOf(flag));
                         if(flag) {
-                            if(Session.getUserData(getApplicationContext()).length() == 0) {
-                                Session.setUserData(getApplicationContext(), id);
+                            if(Session.getUserID(getApplicationContext()).length() == 0) {
+                                Session.setUserID(getApplicationContext(), id);
                                 Log.d("Session", "set user id : " + id);
                             }
                             Intent intent = new Intent(getApplicationContext(), Device_auth_wifi.class);            // Device_auth_wifi로 이동. 테스틀용
-                            //Intent intent = new Intent(getApplicationContext(), MainActivity.class); //REST API 테스트
+//                            Intent intent = new Intent(getApplicationContext(), MainActivity.class); //REST API 테스트
 //                            intent.putExtra("id", id);                          // id값 넘김. 일단 없는걸로 치고 테스트
                             startActivity(intent);
                             LoginActivity.this.finish();

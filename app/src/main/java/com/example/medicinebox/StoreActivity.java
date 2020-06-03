@@ -63,7 +63,7 @@ public class StoreActivity extends AppCompatActivity {
         setContentView(R.layout.store_activity);
 
         // 세션 id 받아오기
-        id = Session.getUserData(getApplicationContext());
+        id = Session.getUserID(getApplicationContext());
 
         btnBack = findViewById(R.id.btnBack);
         btnMenu = findViewById(R.id.btnMenu);
