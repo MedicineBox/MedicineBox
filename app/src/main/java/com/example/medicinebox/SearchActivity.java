@@ -152,7 +152,7 @@ public class SearchActivity extends AppCompatActivity {
 
 //        Log.d("LOGIN", "result : " + result);
         if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
-            Log.d("LOGIN", "TIMEOUT!!!!!");
+            Log.d("ACCOUNTload", "TIMEOUT!!!!!");
 //            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
             SearchActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
@@ -161,7 +161,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             });
         } else if(result == null || result.equals("")){
-            Log.d("LOGIN", "FAIL!!!!!");
+            Log.d("ACCOUNTload", "FAIL!!!!!");
             SearchActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
                 public void run() {
@@ -170,7 +170,7 @@ public class SearchActivity extends AppCompatActivity {
             });
             return null;
         } else {
-            Log.d("LOGIN", "SUCCESS!!!!!");
+            Log.d("ACCOUNTload", "SUCCESS!!!!!");
             return searchArray;
         }
 

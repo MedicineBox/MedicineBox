@@ -119,7 +119,7 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                    URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+name+".png");
                     Log.i("imgurl", String.valueOf(imgurl));
                     InputStream is = imgurl.openStream();
                     final Bitmap bm = BitmapFactory.decodeStream(is);

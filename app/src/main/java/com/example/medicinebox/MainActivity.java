@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TableRow row1, row2, row3, row4, row5, row6, row7;
     View baselayout;
 
-    boolean flag = false;
+    int alarm = 0;
 
 
     @Override
@@ -219,16 +219,20 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> timeloadArray = timeload(id, day);
                     Log.i("timeloadArray", String.valueOf(timeloadArray));
 
-                    // 요일에 따른 푸시알림 설정
-                    int k;
-                    for (k = 0; k < timeloadArray.size(); k++) {
-                        new AlarmHATT(getApplicationContext()).Alarm(timeloadArray.get(k));
+                    alarm = alarmload(id);
+
+                    if (alarm == 1) {
+                        // 요일에 따른 푸시알림 설정
+                        int k;
+                        for (k = 0; k < timeloadArray.size(); k++) {
+                            new AlarmHATT(getApplicationContext()).Alarm(timeloadArray.get(k));
+                        }
+
                     }
 
                     //주기에 따른 푸시알림 설정
                     ArrayList<String> cycleloadArray = cycleload(id, date); //cycleloadArray : 주기별 오늘 복용 약 medi_num
                     Log.i("cycleloadArray", String.valueOf(cycleloadArray));
-
 
                     // 오늘 복용 약 조회
                     ArrayList<String> takeloadArray = takeload(id, day); //takeloadArray : 요일별 오늘 복용 약 medi_num
@@ -237,12 +241,12 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> storeloadArray = storeload(id); //storeloadArray : storage_slot
                     Log.i("storeloadArray", String.valueOf(storeloadArray));
 
-                    String num1 = mediName1.getText().toString();
-                    String num2 = mediName2.getText().toString();
-                    String num3 = mediName3.getText().toString();
-                    String num4 = mediName4.getText().toString();
-                    String num5 = mediName5.getText().toString();
-                    String num6 = mediName6.getText().toString();
+                    String num1 = mediNum1.getText().toString();
+                    String num2 = mediNum2.getText().toString();
+                    String num3 = mediNum3.getText().toString();
+                    String num4 = mediNum4.getText().toString();
+                    String num5 = mediNum5.getText().toString();
+                    String num6 = mediNum6.getText().toString();
 
                     int i;
                     for (i=0; i < takeloadArray.size(); i++) {
@@ -287,19 +291,25 @@ public class MainActivity extends AppCompatActivity {
                     for (j=0; j < storeloadArray.size(); j++) {
                         //list.add(storeloadArray.get(i));
                         if (storeloadArray.get(j).equals("1")) {
-                            String num = mediName1.getText().toString();
-                            final String name = mediload(num);
+                            String num = mediNum1.getText().toString();
+                            String name;
+                            if (num.equals("0")) {
+                                name = noneload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row1.setVisibility(View.VISIBLE);
-                                    mediName1.setText(name);
+                                    mediName1.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -321,19 +331,25 @@ public class MainActivity extends AppCompatActivity {
                             });
 
                         } else if (storeloadArray.get(j).equals("2")) {
-                            String num = mediName2.getText().toString();
-                            final String name = mediload(num);
+                            String num = mediNum2.getText().toString();
+                            String name;
+                            if (num.equals("0")) {
+                                name = noneload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row2.setVisibility(View.VISIBLE);
-                                    mediName2.setText(name);
+                                    mediName2.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -354,19 +370,25 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         } else if (storeloadArray.get(j).equals("3")) {
-                            String num = mediName3.getText().toString();
-                            final String name = mediload(num);
+                            String num = mediNum3.getText().toString();
+                            String name;
+                            if (num.equals("0")) {
+                                name = noneload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row3.setVisibility(View.VISIBLE);
-                                    mediName3.setText(name);
+                                    mediName3.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -387,19 +409,25 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         } else if (storeloadArray.get(j).equals("4")) {
-                            String num = mediName4.getText().toString();
-                            final String name = mediload(num);
+                            String num = mediNum4.getText().toString();
+                            String name;
+                            if (num.equals("0")) {
+                                name = noneload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row4.setVisibility(View.VISIBLE);
-                                    mediName4.setText(name);
+                                    mediName4.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -420,19 +448,25 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         } else if (storeloadArray.get(j).equals("5")) {
-                            String num = mediName5.getText().toString();
-                            final String name = mediload(num);
+                            String num = mediNum5.getText().toString();
+                            String name;
+                            if (num.equals("0")) {
+                                name = noneload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row5.setVisibility(View.VISIBLE);
-                                    mediName5.setText(name);
+                                    mediName5.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -453,19 +487,25 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         } else if (storeloadArray.get(j).equals("6")) {
-                            String num = mediName6.getText().toString();
-                            final String name = mediload(num);
+                            String num = mediNum6.getText().toString();
+                            String name;
+                            if (num.equals("0")) {
+                                name = noneload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row6.setVisibility(View.VISIBLE);
-                                    mediName6.setText(name);
+                                    mediName6.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -486,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         } else if (storeloadArray.get(j).equals("7")) {
-                            String num = mediName7.getText().toString();
+                            String num = mediNum7.getText().toString();
                             final String name = mediload(num);
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
@@ -498,7 +538,7 @@ public class MainActivity extends AppCompatActivity {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:8080/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+name+".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -1202,6 +1242,94 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return null;
+    }
+
+    private String noneload(String num) throws JSONException {
+        REST_API noneload = new REST_API("noneload");
+
+        String json = "{\"num\" : \"" + num + "\"}";
+
+        String result = noneload.post(json);
+        Log.d("noneload", "result : " + result); //쿼리 결과값
+        String none_name = null;
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("noneload", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("noneload", "FAIL!!!!!");
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return none_name;
+        } else if(result != null) {
+            Log.d("noneload", "SUCCESS!!!!!");
+
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                none_name = jsonObject.getString("none_name");
+                Log.d("none_name", String.valueOf(none_name));
+            }
+            return none_name;
+        }
+        return none_name;
+    }
+
+    // 알림 설정
+    private int alarmload(String id) throws JSONException {
+        REST_API alarmload = new REST_API("alarmload");
+
+        String json = "{\"id\" : \"" + id + "\"}";
+
+        String result = alarmload.post(json);
+        Log.d("ALARMload", "result : " + result); //쿼리 결과값
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("ALARMload", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("ALARMload", "FAIL!!!!!");
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return 0;
+        } else if(result != null) {
+            Log.d("ALARMload", "SUCCESS!!!!!");
+
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                int alarm = jsonObject.getInt("user_alarm");
+                Log.d("result", String.valueOf(alarm));
+
+                if (alarm == 1) {
+                    return 1;
+                }
+                else
+                    return 0;
+            }
+        }
+
+        return 1;
     }
 
     //푸시 알림

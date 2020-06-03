@@ -100,14 +100,13 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/mediName1"
+                <AutoCompleteTextView
+                    android:id="@+id/mediName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/signature"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:textColor="#000000" />
+                    android:completionThreshold="1"
+                    android:hint="의약품명을 입력하세요." />
 
                 <TextView
                     android:id="@+id/textType"

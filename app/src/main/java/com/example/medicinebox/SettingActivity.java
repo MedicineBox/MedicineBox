@@ -105,14 +105,6 @@ public class SettingActivity extends AppCompatActivity {
                             id = Session.getUserData(getApplicationContext());
                             flag = alarmedit(id, 1);
                             Log.d("IN ASYNC", String.valueOf(flag));
-                            if(flag){
-                                SettingActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SettingActivity.this, "변경되었습니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
                         }
                     });
                 } else {
@@ -123,14 +115,6 @@ public class SettingActivity extends AppCompatActivity {
                             id = Session.getUserData(getApplicationContext());
                             flag = alarmedit(id, 0);
                             Log.d("IN ASYNC", String.valueOf(flag));
-                            if(flag){
-                                SettingActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SettingActivity.this, "변경되었습니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
                         }
                     });
                 }
