@@ -687,7 +687,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/signature"
                     android:clickable="true"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/slotNum7"

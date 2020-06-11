@@ -1,11 +1,13 @@
 package com.example.medicinebox;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -62,7 +64,7 @@ public class AddMediActivity extends AppCompatActivity {
     String mediNum, storageNum, noneNum, type, start, time1, time2, time3, time4, time5, expire;
     int cycle = 0, fre = 0, slot = 0;
 
-    boolean flag;
+    String noneStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class AddMediActivity extends AppCompatActivity {
         setContentView(R.layout.addmedi_activity);
 
         // 세션 id 받아오기
-        id = Session.getUserData(getApplicationContext());
+        id = Session.getUserID(getApplicationContext());
 
         btnBack = findViewById(R.id.btnBack);
 
@@ -176,7 +178,13 @@ public class AddMediActivity extends AppCompatActivity {
                 int i;
                 for (i=0; i<slotArray.size(); i++) {
                     if (slot.equals(slotArray.get(i)) && intSlot != 6) {
-                        Toast.makeText(getApplicationContext(), "이미 보관중인 공간입니다. 다른 곳을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(AddMediActivity.this)
+                                .setTitle("이미 보관중인 공간입니다. 다른 곳을 선택해 주세요.")
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
                     }
                 }
             }
@@ -203,7 +211,7 @@ public class AddMediActivity extends AppCompatActivity {
                 for (i=0; i < listArray.size(); i++) {
                     list.add(listArray.get(i));
                 }
-                for (i = 1; i < 233; i++) {
+                for (i = 1; i < 30; i++) {
                     getXmlData(i);
                 }
                 AddMediActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
@@ -489,118 +497,171 @@ public class AddMediActivity extends AppCompatActivity {
                 expire = (String) btnExpiredate.getText();
                 expire = expire.replaceAll(" ", "");
 
-                // 복용시간
-                final ArrayList<String> timeArray = new ArrayList<>();
-                fre = spinPerDay.getSelectedItemPosition()+1;
-                if (fre == 1) {
-                    time1 = editTime((String) btnAddTime1.getText());
-                    timeArray.add(time1);
-                } else if (fre == 2) {
-                    time1 = editTime((String) btnAddTime1.getText());
-                    time2 = editTime((String) btnAddTime2.getText());
-                    timeArray.add(time1);
-                    timeArray.add(time2);
-                } else if (fre == 3) {
-                    time1 = editTime((String) btnAddTime1.getText());
-                    time2 = editTime((String) btnAddTime2.getText());
-                    time3 = editTime((String) btnAddTime3.getText());
-                    timeArray.add(time1);
-                    timeArray.add(time2);
-                    timeArray.add(time3);
-                } else if (fre == 4) {
-                    time1 = editTime((String) btnAddTime1.getText());
-                    time2 = editTime((String) btnAddTime2.getText());
-                    time3 = editTime((String) btnAddTime3.getText());
-                    time4 = editTime((String) btnAddTime4.getText());
-                    timeArray.add(time1);
-                    timeArray.add(time2);
-                    timeArray.add(time3);
-                    timeArray.add(time4);
-                } else if (fre == 5) {
-                    time1 = editTime((String) btnAddTime1.getText());
-                    time2 = editTime((String) btnAddTime2.getText());
-                    time3 = editTime((String) btnAddTime3.getText());
-                    time4 = editTime((String) btnAddTime4.getText());
-                    time5 = editTime((String) btnAddTime5.getText());
-                    timeArray.add(time1);
-                    timeArray.add(time2);
-                    timeArray.add(time3);
-                    timeArray.add(time4);
-                    timeArray.add(time5);
-                }
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i("timeArray", String.valueOf(timeArray));
+                if (slot != 7) { // 1~6번 칸
+                    // 복용시간
+                    final ArrayList<String> timeArray = new ArrayList<>();
+                    fre = spinPerDay.getSelectedItemPosition()+1;
+                    if (fre == 1) {
+                        time1 = editTime((String) btnAddTime1.getText());
+                        timeArray.add(time1);
+                    } else if (fre == 2) {
+                        time1 = editTime((String) btnAddTime1.getText());
+                        time2 = editTime((String) btnAddTime2.getText());
+                        timeArray.add(time1);
+                        timeArray.add(time2);
+                    } else if (fre == 3) {
+                        time1 = editTime((String) btnAddTime1.getText());
+                        time2 = editTime((String) btnAddTime2.getText());
+                        time3 = editTime((String) btnAddTime3.getText());
+                        timeArray.add(time1);
+                        timeArray.add(time2);
+                        timeArray.add(time3);
+                    } else if (fre == 4) {
+                        time1 = editTime((String) btnAddTime1.getText());
+                        time2 = editTime((String) btnAddTime2.getText());
+                        time3 = editTime((String) btnAddTime3.getText());
+                        time4 = editTime((String) btnAddTime4.getText());
+                        timeArray.add(time1);
+                        timeArray.add(time2);
+                        timeArray.add(time3);
+                        timeArray.add(time4);
+                    } else if (fre == 5) {
+                        time1 = editTime((String) btnAddTime1.getText());
+                        time2 = editTime((String) btnAddTime2.getText());
+                        time3 = editTime((String) btnAddTime3.getText());
+                        time4 = editTime((String) btnAddTime4.getText());
+                        time5 = editTime((String) btnAddTime5.getText());
+                        timeArray.add(time1);
+                        timeArray.add(time2);
+                        timeArray.add(time3);
+                        timeArray.add(time4);
+                        timeArray.add(time5);
+                    }
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i("timeArray", String.valueOf(timeArray));
 
-                        try {
-                            Log.i("mediName", mediName.getText().toString());
-                            mediNum = mediname(mediName.getText().toString());
+                            try {
+                                Log.i("mediName", mediName.getText().toString());
+                                mediNum = mediname(mediName.getText().toString());
 
-                            if (mediNum.equals("0")) {
-                                // 디비에 의약품 정보가 없으면 none 테이블에 추가
-                                noneNum = noneadd(slot, mediName.getText().toString());
-                                storageNum = storageadd(id, mediNum, slot, expire, noneNum);
-                                Log.i("noneNum",noneNum);
-                            }
-                            else {
-                                storageNum = storageadd(id, mediNum, slot, expire, "");
-                                Log.i("noneNum",noneNum);
-                            }
-                            Log.i("storageNum",storageNum);
+                                if (mediNum.equals("0")) {
+                                    // none 테이블에 같은 이름으로 의약품 있는 지 검색
+                                    noneStore = noneload(mediName.getText().toString());
+                                    if (noneStore.equals("-1")) { // 없으면
+                                        // 새로 추가
+                                        noneNum = nonestoreadd(slot, mediName.getText().toString());
+                                        storageNum = storageadd(id, mediNum, slot, expire, noneNum);
+                                    } else { // 있으면
+                                        // 보관 수 증가
+                                        nonestoreup(Integer.parseInt(noneStore) + 1, mediName.getText().toString());
+                                    }
+                                }
+                                else {
+                                    // storage table에 추가
+                                    storageNum = storageadd(id, mediNum, slot, expire, "");
 
-                            if (typedayVal == 1) {
-                                type = "요일별";
-                                final ArrayList<String> dayArray = new ArrayList<>();
-                                if (daySunVal == 1) {
-                                    dayArray.add("일");
+                                    // 보관 수 증가
+                                    medistoreup(mediNum);
                                 }
-                                if (dayMonVal == 1) {
-                                    dayArray.add("월");
-                                }
-                                if (dayTueVal == 1) {
-                                    dayArray.add("화");
-                                }
-                                if (dayWedVal == 1) {
-                                    dayArray.add("수");
-                                }
-                                if (dayThuVal == 1) {
-                                    dayArray.add("목");
-                                }
-                                if (dayFriVal == 1) {
-                                    dayArray.add("금");
-                                }
-                                if (daySatVal == 1) {
-                                    dayArray.add("토");
-                                }
-                                Log.i("dayArray", String.valueOf(dayArray));
 
-                                for (i = 0; i < timeArray.size(); i ++) {
-                                    for (j = 0; j < dayArray.size(); j++) {
-                                        takedayadd(id, mediNum, storageNum, type, dayArray.get(j), fre, timeArray.get(i));
+                                if (typedayVal == 1) {
+                                    type = "요일별";
+                                    final ArrayList<String> dayArray = new ArrayList<>();
+                                    if (daySunVal == 1) {
+                                        dayArray.add("일");
+                                    }
+                                    if (dayMonVal == 1) {
+                                        dayArray.add("월");
+                                    }
+                                    if (dayTueVal == 1) {
+                                        dayArray.add("화");
+                                    }
+                                    if (dayWedVal == 1) {
+                                        dayArray.add("수");
+                                    }
+                                    if (dayThuVal == 1) {
+                                        dayArray.add("목");
+                                    }
+                                    if (dayFriVal == 1) {
+                                        dayArray.add("금");
+                                    }
+                                    if (daySatVal == 1) {
+                                        dayArray.add("토");
+                                    }
+                                    Log.i("dayArray", String.valueOf(dayArray));
+
+                                    for (i = 0; i < timeArray.size(); i ++) {
+                                        for (j = 0; j < dayArray.size(); j++) {
+                                            takedayadd(id, mediNum, storageNum, type, dayArray.get(j), fre, timeArray.get(i));
+                                        }
+                                    }
+
+                                } else if (typecycleVal == 1) {
+
+                                    type = "주기별";
+                                    start = (String) btnStartdate.getText();
+                                    start = start.replaceAll(" ","");
+                                    cycle = spinCycle.getSelectedItemPosition()+1;
+
+                                    for (i = 0; i < timeArray.size(); i++) {
+                                        takecycleadd(id, mediNum, storageNum, type, start, cycle, fre, timeArray.get(i));
                                     }
                                 }
 
-                            } else if (typecycleVal == 1) {
+                                // 잠금 해제 신호 송신 - slot : slot
 
-                                type = "주기별";
-                                start = (String) btnStartdate.getText();
-                                start = start.replaceAll(" ","");
-                                cycle = spinCycle.getSelectedItemPosition()+1;
 
-                                for (i = 0; i < timeArray.size(); i++) {
-                                    takecycleadd(id, mediNum, storageNum, type, start, cycle, fre, timeArray.get(i));
-                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
-                Toast.makeText(getApplicationContext(),"추가 되었습니다.",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                    });
+                    Toast.makeText(getApplicationContext(),"추가 되었습니다.",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                } else { // 7번 칸
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Log.i("mediName", mediName.getText().toString());
+                                mediNum = mediname(mediName.getText().toString());
+
+                                if (mediNum.equals("0")) {
+                                    // none 테이블에 같은 이름으로 의약품 있는 지 검색
+                                    noneStore = noneload(mediName.getText().toString());
+                                    if (noneStore.equals("-1")) { // 없으면
+                                        // 새로 추가
+                                        noneNum = nonestoreadd(slot, mediName.getText().toString());
+                                        storageNum = storageadd(id, mediNum, slot, expire, noneNum);
+                                    } else { // 있으면
+                                        // 보관 수 증가
+                                        nonestoreup(Integer.parseInt(noneStore) + 1, mediName.getText().toString());
+                                    }
+                                }
+                                else {
+                                    // storage table에 추가
+                                    storageNum = storageadd(id, mediNum, slot, expire, "");
+
+                                    // 보관 수 증가
+                                    medistoreup(mediNum);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    Toast.makeText(getApplicationContext(),"추가 되었습니다.",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
+
             }
         });
 
@@ -842,40 +903,6 @@ public class AddMediActivity extends AppCompatActivity {
         return "0";
     }
 
-    private String noneload(String num) throws JSONException {
-
-        REST_API noneload = new REST_API("noneload");
-
-        String json = "{\"num\" : \"" + num + "\"}";
-
-        String result = noneload.post(json);
-        Log.d("noneload", "result : " + result); //쿼리 결과값
-
-        JSONArray jsonArray = new JSONArray(result);
-        String none_name = null;
-
-        Log.i("resultjson", String.valueOf(jsonArray.length()));
-        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
-            Log.d("noneload", "TIMEOUT!!!!!");
-//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
-
-            AddMediActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
-                @Override
-                public void run() {
-                    Toast.makeText(AddMediActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
-                }
-            });
-            return "timeout";
-        }
-        else {
-            for(int i = 0 ; i<jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                none_name = jsonObject.getString("none_name");
-            }
-            return none_name;
-        }
-    }
-
     private String storageadd(String id, String mediNum, int slotNum, String expire, String noneNum) throws JSONException {
 
         REST_API storageadd = new REST_API("storageadd");
@@ -985,15 +1012,52 @@ public class AddMediActivity extends AppCompatActivity {
         return false;
     }
 
-    private String noneadd(int num, String name) throws JSONException {
+    private String noneload(String name) throws JSONException {
 
-        REST_API noneadd = new REST_API("noneadd");
+        REST_API noneload = new REST_API("noneload");
+
+        String json = "{\"name\" : \"" + name + "\"}";
+
+        String result = noneload.post(json);
+        Log.d("noneload", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+        String none_store = null;
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("noneload", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            AddMediActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(AddMediActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return "timeout";
+        }
+        else if (jsonArray.length() == 0) {
+            return "-1";
+        }
+        else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                none_store = jsonObject.getString("none_store");
+            }
+            return none_store;
+        }
+    }
+
+    private String nonestoreadd(int num, String name) throws JSONException {
+
+        REST_API nonestoreadd = new REST_API("nonestoreadd");
 
         String json = "{\"num\" : \"" + num + "\", \"name\" : \"" + name + "\"}";
 
 
-        String result = noneadd.post(json);
-        Log.d("noneadd", "result : " + result); //쿼리 결과값
+        String result = nonestoreadd.post(json);
+        Log.d("nonestoreadd", "result : " + result); //쿼리 결과값
 
         JSONArray jsonArray = new JSONArray(result);
 
@@ -1005,7 +1069,7 @@ public class AddMediActivity extends AppCompatActivity {
         }
 
         if(result.equals("timeout")) {                                                         // 서버 연결 시간(5초) 초과시
-            Log.d("noneadd", "TIMEOUT!!!!!");
+            Log.d("nonestoreadd", "TIMEOUT!!!!!");
 //            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
 
             AddMediActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
@@ -1018,6 +1082,62 @@ public class AddMediActivity extends AppCompatActivity {
             return "timeout";
         } else {
             return none_num;
+        }
+    }
+
+    private boolean nonestoreup(int num, String name) throws JSONException {
+
+        REST_API nonestoreup = new REST_API("nonestoreup");
+
+        String json = "{\"num\" : \"" + num + "\", \"name\" : \"" + name + "\"}";
+
+        String result = nonestoreup.post(json);
+        Log.d("nonestoreup", "result : " + result); //쿼리 결과값
+
+        if(result.equals("timeout")) {                                                         // 서버 연결 시간(5초) 초과시
+            Log.d("nonestoreup", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            AddMediActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(AddMediActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return false;
+        } else if (result.equals("false")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean medistoreup(String num) throws JSONException {
+
+        REST_API medistoreup = new REST_API("medistoreup");
+
+        String json = "{\"num\" : \"" + num + "\"}";
+
+        String result = medistoreup.post(json);
+        Log.d("medistoreup", "result : " + result); //쿼리 결과값
+
+        if(result.equals("timeout")) {                                                         // 서버 연결 시간(5초) 초과시
+            Log.d("medistoreup", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            AddMediActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(AddMediActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return false;
+        } else if (result.equals("false")) {
+            return false;
+        } else {
+            return true;
         }
     }
 }

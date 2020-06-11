@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -63,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
     View baselayout;
 
     int alarm = 0;
+    int k = 0;
+
+    boolean takef, storagef;
+
+    ArrayList<String> trashArray = new ArrayList<>();
+    ArrayList<String> trashNumArray = new ArrayList<>();
+    ArrayList<String> trashNameArray = new ArrayList<>();
+    ArrayList<Integer> trashSlotArray = new ArrayList<>();
 
 
     @Override
@@ -167,39 +176,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //버리기
-        btnTrash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 버릴 약 있는 경우
-                /*new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("약을 버리시겠습니까?")
-                        .setMessage("약 명")
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which){
-                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which){
-                                Toast.makeText(getApplicationContext(), "취소 누름", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();*/
-
-                // 버릴 약 없는 경우
-                /*new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("유통기한이 지난 약이 없습니다.")
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which){
-                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();*/
-            }
-        });
-
-        //보관의약품 조회
         //오늘 요일
         Date today = new Date();
         SimpleDateFormat format = new SimpleDateFormat("EE");
@@ -214,6 +190,126 @@ public class MainActivity extends AppCompatActivity {
         final String date = dformat.format(today);
         Log.i("date", date);
 
+        //버리기
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    trashArray = trash(id, date); // 유통기한 지난 약 slot num
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnTrash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("trashArray", String.valueOf(trashArray.size()));
+
+                // 버릴 약 없는 경우
+                if (trashArray.size() == 0) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("유통기한이 지난 약이 없습니다.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which){
+                                }
+                            })
+                            .show();
+                }
+                // 버릴 약 있는 경우
+                else {
+                    for (int i = 0; i < trashArray.size(); i++) {
+                        if (trashArray.get(i).equals("1")) {
+                            trashNumArray.add(mediNum1.getText().toString());
+                            trashNameArray.add(mediName1.getText().toString());
+                            trashSlotArray.add(1);
+                        } else if (trashArray.get(i).equals("2")) {
+                            trashNumArray.add(mediNum2.getText().toString());
+                            trashNameArray.add(mediName2.getText().toString());
+                            trashSlotArray.add(2);
+                        } else if (trashArray.get(i).equals("3")) {
+                            trashNumArray.add(mediNum3.getText().toString());
+                            trashNameArray.add(mediName3.getText().toString());
+                            trashSlotArray.add(3);
+                        } else if (trashArray.get(i).equals("4")) {
+                            trashNumArray.add(mediNum4.getText().toString());
+                            trashNameArray.add(mediName4.getText().toString());
+                            trashSlotArray.add(4);
+                        } else if (trashArray.get(i).equals("5")) {
+                            trashNumArray.add(mediNum5.getText().toString());
+                            trashNameArray.add(mediName5.getText().toString());
+                            trashSlotArray.add(5);
+                        } else if (trashArray.get(i).equals("6")) {
+                            trashNumArray.add(mediNum6.getText().toString());
+                            trashNameArray.add(mediName6.getText().toString());
+                            trashSlotArray.add(6);
+                        } else if (trashArray.get(i).equals("7")) {
+                            trashNumArray.add(mediNum7.getText().toString());
+                            trashNameArray.add(mediName7.getText().toString());
+                            trashSlotArray.add(7);
+                        }
+                    }
+                    k = trashSlotArray.size();
+
+                    if (k == 1) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("약을 버리시겠습니까?")
+                                .setMessage(trashNameArray.get(0))
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                        Log.i("trash - k", String.valueOf(k));
+                                        trashOk(trashNumArray.get(0), trashSlotArray.get(0));
+
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
+                    } else if (k == 2) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("약을 버리시겠습니까?")
+                                .setMessage(trashNameArray.get(0) + ", " + trashNameArray.get(1))
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                        Log.i("trash - k", String.valueOf(k));
+                                        trashOk(trashNumArray.get(0), trashSlotArray.get(0));
+                                        trashOk(trashNumArray.get(1), trashSlotArray.get(1));
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
+                    } else if (k == 3) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("약을 버리시겠습니까?")
+                                .setMessage(trashNameArray.get(0) + ", " + trashNameArray.get(1) + ", " + trashNameArray.get(2))
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                        Log.i("trash - k", String.valueOf(k));
+                                        trashOk(trashNumArray.get(0), trashSlotArray.get(0));
+                                        trashOk(trashNumArray.get(1), trashSlotArray.get(1));
+                                        trashOk(trashNumArray.get(2), trashSlotArray.get(2));
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
+                    }
+
+                }
+
+            }
+        });
+
+        //보관의약품 조회
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -233,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     //주기에 따른 푸시알림 설정
-                    ArrayList<String> cycleloadArray = cycleload(id, date); //cycleloadArray : 주기별 오늘 복용 약 medi_num
+                    ArrayList<String> cycleloadArray = cycleload(id, date, alarm); //cycleloadArray : 주기별 오늘 복용 약 medi_num
                     Log.i("cycleloadArray", String.valueOf(cycleloadArray));
 
                     // 오늘 복용 약 조회
@@ -296,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                             String num = mediNum1.getText().toString();
                             String name;
                             if (num.equals("0")) {
-                                name = noneload(storeloadArray.get(j));
+                                name = nonenameload(storeloadArray.get(j));
                             } else {
                                 name = mediload(num);
                             }
@@ -336,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
                             String num = mediNum2.getText().toString();
                             String name;
                             if (num.equals("0")) {
-                                name = noneload(storeloadArray.get(j));
+                                name = nonenameload(storeloadArray.get(j));
                             } else {
                                 name = mediload(num);
                             }
@@ -375,7 +471,7 @@ public class MainActivity extends AppCompatActivity {
                             String num = mediNum3.getText().toString();
                             String name;
                             if (num.equals("0")) {
-                                name = noneload(storeloadArray.get(j));
+                                name = nonenameload(storeloadArray.get(j));
                             } else {
                                 name = mediload(num);
                             }
@@ -414,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
                             String num = mediNum4.getText().toString();
                             String name;
                             if (num.equals("0")) {
-                                name = noneload(storeloadArray.get(j));
+                                name = nonenameload(storeloadArray.get(j));
                             } else {
                                 name = mediload(num);
                             }
@@ -453,7 +549,7 @@ public class MainActivity extends AppCompatActivity {
                             String num = mediNum5.getText().toString();
                             String name;
                             if (num.equals("0")) {
-                                name = noneload(storeloadArray.get(j));
+                                name = nonenameload(storeloadArray.get(j));
                             } else {
                                 name = mediload(num);
                             }
@@ -492,7 +588,7 @@ public class MainActivity extends AppCompatActivity {
                             String num = mediNum6.getText().toString();
                             String name;
                             if (num.equals("0")) {
-                                name = noneload(storeloadArray.get(j));
+                                name = nonenameload(storeloadArray.get(j));
                             } else {
                                 name = mediload(num);
                             }
@@ -529,18 +625,24 @@ public class MainActivity extends AppCompatActivity {
                             });
                         } else if (storeloadArray.get(j).equals("7")) {
                             String num = mediNum7.getText().toString();
-                            final String name = mediload(num);
+                            String name;
+                            if (num.equals("0")) {
+                                name = nonenameload(storeloadArray.get(j));
+                            } else {
+                                name = mediload(num);
+                            }
+                            final String finalName = name;
                             MainActivity.this.runOnUiThread(new Runnable() {                                     // UI 쓰레드에서 실행
                                 @Override
                                 public void run() {
                                     row7.setVisibility(View.VISIBLE);
-                                    mediName7.setText(name);
+                                    mediName7.setText(finalName);
 
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
-                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+name+".png");
+                                                URL imgurl = new URL("http://www.medicinebox.site/project/medicine/img/"+ finalName +".png");
                                                 Log.i("imgurl", String.valueOf(imgurl));
                                                 InputStream is = imgurl.openStream();
                                                 final Bitmap bm = BitmapFactory.decodeStream(is);
@@ -814,6 +916,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // 버리기 확인 눌렀을 때
+    private void trashOk(final String mediNum, int slotNum) {
+        Log.i("trash - mediNum", mediNum);
+        Log.i("trash - slotNum", String.valueOf(slotNum));
+        // 7번 칸이면
+        if (slotNum == 7) {
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // 디비에서 삭제
+                    storagef = storagedelete(mediNum);
+                    if (storagef == true) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                }
+            });
+        } else { // 1~6번 칸이면
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // 디비에서 삭제
+                    takef = takedelete(mediNum);
+                    storagef = storagedelete(mediNum);
+
+                    // 잠금해제 신호 송신 - slot : slotNum
+
+
+                    if (takef == true && storagef == true) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+    }
+
     // 현재시간과 복용 시간 비교
     boolean diffTime(String ctime, String dtime) throws ParseException {
         SimpleDateFormat tformat = new SimpleDateFormat("HH:mm:ss");
@@ -845,6 +999,72 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager inputMethodManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private ArrayList<String> trash(String id, String date) throws JSONException, ParseException {
+
+        SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        old_format.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        SimpleDateFormat new_format = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date today = new_format.parse(date);
+
+        REST_API storeload = new REST_API("storeload");
+
+        String json = "{\"id\" : \"" + id + "\"}";
+
+        String result = storeload.post(json);
+
+        ArrayList<String> trashArray = new ArrayList<>();
+
+        Log.d("trashload", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+        for(int i = 0 ; i<jsonArray.length(); i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String storage_slot = jsonObject.getString("storage_slot");
+            String medi_num = jsonObject.getString("medi_num");
+            String storage_expire = jsonObject.getString("storage_expire");
+
+            Date old_date = old_format.parse(storage_expire);
+            old_date.setTime ( old_date.getTime ( ) + ( (long) 1000 * 60 * 60 * 24 ) );
+            String new_date = new_format.format(old_date);
+            Date expire = new_format.parse(new_date);
+            Log.i("trash expire", String.valueOf(expire));
+            Log.i("trash today", String.valueOf(today));
+
+            long calDate = expire.getTime() - today.getTime();
+            Log.i("trash calDate", String.valueOf(calDate));
+            if (calDate < 0) {
+                trashArray.add(storage_slot);
+            }
+        }
+
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("trashload", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("trashload", "FAIL!!!!!");
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "보관의약품이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return null;
+        } else if(result != null) {
+            Log.d("trashload", "SUCCESS!!!!!");
+            return trashArray;
+        }
+
+        return null;
     }
 
     private ArrayList<String> takeload(String id, String day) throws JSONException {
@@ -891,7 +1111,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    private ArrayList<String> cycleload(String id, String date) throws JSONException, ParseException {
+    private ArrayList<String> cycleload(String id, String date, int alarm) throws JSONException, ParseException {
         SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         old_format.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         SimpleDateFormat new_format = new SimpleDateFormat("yyyy-MM-dd");
@@ -929,12 +1149,14 @@ public class MainActivity extends AppCompatActivity {
             Log.i("calDateDays", String.valueOf(calDateDays));
             Log.i("calDateDays % take_cycle", String.valueOf(calDateDays % take_cycle));
 
-            // 주기별 푸시알림 설정
-            if (calDateDays % take_cycle == 0) {
+            if (alarm == 1 && calDateDays % take_cycle == 0) {
                 cycleArray.add(medi_num);
-                new AlarmHATT(getApplicationContext()).Alarm(take_time);
-            }
 
+                // 주기별 알림 설정
+                new AlarmHATT(getApplicationContext()).Alarm(take_time);
+            } else if (alarm == 0 && calDateDays % take_cycle == 0) {
+                cycleArray.add(medi_num);
+            }
         }
 
         if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
@@ -1296,17 +1518,17 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    private String noneload(String num) throws JSONException {
-        REST_API noneload = new REST_API("noneload");
+    private String nonenameload(String num) throws JSONException {
+        REST_API nonenameload = new REST_API("nonenameload");
 
         String json = "{\"num\" : \"" + num + "\"}";
 
-        String result = noneload.post(json);
-        Log.d("noneload", "result : " + result); //쿼리 결과값
+        String result = nonenameload.post(json);
+        Log.d("nonenameload", "result : " + result); //쿼리 결과값
         String none_name = null;
 
         if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
-            Log.d("noneload", "TIMEOUT!!!!!");
+            Log.d("nonenameload", "TIMEOUT!!!!!");
 //            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
             MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
@@ -1315,7 +1537,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else if(result == null || result.equals("")){
-            Log.d("noneload", "FAIL!!!!!");
+            Log.d("nonenameload", "FAIL!!!!!");
             MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
                 @Override
                 public void run() {
@@ -1324,7 +1546,7 @@ public class MainActivity extends AppCompatActivity {
             });
             return none_name;
         } else if(result != null) {
-            Log.d("noneload", "SUCCESS!!!!!");
+            Log.d("nonenameload", "SUCCESS!!!!!");
 
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0 ; i<jsonArray.length(); i++){
@@ -1335,6 +1557,90 @@ public class MainActivity extends AppCompatActivity {
             return none_name;
         }
         return none_name;
+    }
+
+    // storage table에서 삭제
+    private boolean storagedelete(String num) {
+
+        REST_API storagedelete = new REST_API("storagedelete");
+
+        String json = "{\"num\" : \"" + num + "\"}";
+
+        String result = storagedelete.delete(json);
+//        Log.d("LOGIN", "result : " + result);
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("storagedelete", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("storagedelete", "FAIL!!!!!");
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return false;
+        } else if(result.equals("true\n")) {
+            Log.d("storagedelete", "SUCCESS!!!!!");
+            return true;
+        } else if(result.equals("false\n")) {
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        return false;
+    }
+
+    // take table에서 삭제
+    private boolean takedelete(String num) {
+
+        REST_API takedelete = new REST_API("takedelete");
+
+        String json = "{\"num\" : \"" + num + "\"}";
+
+        String result = takedelete.delete(json);
+//        Log.d("LOGIN", "result : " + result);
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("takedelete", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("takedelete", "FAIL!!!!!");
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return false;
+        } else if(result.equals("true\n")) {
+            Log.d("takedelete", "SUCCESS!!!!!");
+            return true;
+        } else if(result.equals("false\n")) {
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        return false;
     }
 
     // 알림 설정

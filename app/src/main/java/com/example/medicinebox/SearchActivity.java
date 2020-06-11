@@ -184,7 +184,7 @@ public class SearchActivity extends AppCompatActivity {
         Log.i("word",word);
         //String name = URLEncoder.encode(str);//한글의 경우 인식이 안되기에 utf-8 방식으로 encoding..
         String key= "NNlPSgKdYOzfOQTW0r5g1EGKaq43lm%2FmEwfx%2Fyi09i6FtGJCPyG1fB2yIEvE4lCLfxs7X6O%2FXtZ89jslBzW%2BWw%3D%3D";
-        String queryUrl="http://apis.data.go.kr/1470000/MdcinGrnIdntfcInfoService/getMdcinGrnIdntfcInfoList?"+"ServiceKey="+key+"&item_name="+word;
+        String queryUrl="http://apis.data.go.kr/1470000/MdcinGrnIdntfcInfoService/getMdcinGrnIdntfcInfoList?"+"ServiceKey="+key+"&numOfRows=100"+"&item_name="+word;
         Log.i("url",queryUrl);
         try {
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.

@@ -56,6 +56,7 @@ public class StoreActivity extends AppCompatActivity {
     boolean flag = false;
     boolean flag2 = false;
     boolean flag3 = false;
+    boolean takef, storagef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,12 +207,53 @@ public class StoreActivity extends AppCompatActivity {
                                         .setMessage("삭제 후 약을 모두 꺼내야 합니다.")
                                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which){
-                                                Toast.makeText(getApplicationContext(), "확인 누름", Toast.LENGTH_SHORT).show();
+                                                AsyncTask.execute(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        if (slot.equals("7")) {
+                                                            // 디비에서 삭제
+                                                            storagef = storagedelete(num);
+                                                            if (storagef == true) {
+                                                                StoreActivity.this.runOnUiThread(new Runnable() {
+                                                                    @Override
+                                                                    public void run() {
+                                                                        Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        } else {
+                                                            // 디비에서 삭제
+                                                            takef = takedelete(num);
+                                                            storagef = storagedelete(num);
+
+                                                            // 잠금 해제 신호 송신 - slot : Integer.parseInt(slot)
+
+
+                                                            if (takef == true && storagef == true) {
+
+                                                                StoreActivity.this.runOnUiThread(new Runnable() {
+                                                                    @Override
+                                                                    public void run() {
+                                                                        Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+
+                                                    }
+                                                });
+
                                             }
                                         })
                                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which){
-                                                Toast.makeText(getApplicationContext(), "취소 누름", Toast.LENGTH_SHORT).show();
                                             }
                                         })
                                         .show();
@@ -229,6 +271,8 @@ public class StoreActivity extends AppCompatActivity {
        btnPilladd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 잠금 해제 신호 송신 - slot : Integer.parseInt(slot)
+
                 Toast.makeText(getApplicationContext(), "잠금이 해제되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -531,6 +575,91 @@ public class StoreActivity extends AppCompatActivity {
                 takeTime5.setText(timeArray.get(4));
             }
             return true;
+        }
+
+        return false;
+    }
+
+
+    // take table에서 삭제
+    private boolean takedelete(String num) {
+
+        REST_API takedelete = new REST_API("takedelete");
+
+        String json = "{\"num\" : \"" + num + "\"}";
+
+        String result = takedelete.delete(json);
+//        Log.d("LOGIN", "result : " + result);
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("takedelete", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("takedelete", "FAIL!!!!!");
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return false;
+        } else if(result.equals("true\n")) {
+            Log.d("takedelete", "SUCCESS!!!!!");
+            return true;
+        } else if(result.equals("false\n")) {
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        return false;
+    }
+
+    // storage table에서 삭제
+    private boolean storagedelete(String num) {
+
+        REST_API storagedelete = new REST_API("storagedelete");
+
+        String json = "{\"num\" : \"" + num + "\"}";
+
+        String result = storagedelete.delete(json);
+//        Log.d("LOGIN", "result : " + result);
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("storagedelete", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("storagedelete", "FAIL!!!!!");
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return false;
+        } else if(result.equals("true\n")) {
+            Log.d("storagedelete", "SUCCESS!!!!!");
+            return true;
+        } else if(result.equals("false\n")) {
+            StoreActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(StoreActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         return false;

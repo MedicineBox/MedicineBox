@@ -32,6 +32,8 @@ public class SearchSelect extends AppCompatActivity {
 
     boolean flag;
 
+    String noneSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,12 @@ public class SearchSelect extends AppCompatActivity {
                 }
                 Log.d("IN ASYNC", String.valueOf(flag));
                 if(flag) {
+                    try {
+                        count = searchload(name);
+                        searchadd(count+1, name);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -99,6 +107,19 @@ public class SearchSelect extends AppCompatActivity {
 
                     thread.start();
                 } else {
+                    try {
+                        // none 테이블에 같은 이름으로 의약품 있는 지 검색
+                        noneSearch = noneload(name);
+                        if (noneSearch.equals("-1")) { // 없으면
+                            // 새로 추가
+                            nonesearchadd(name);
+                        } else { // 있으면
+                            // search 수 증가
+                            nonesearchup(Integer.parseInt(noneSearch) + 1, name);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Thread thread2 = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -181,6 +202,171 @@ public class SearchSelect extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    private int searchload(String name) throws JSONException {
+
+        REST_API mediname = new REST_API("mediname");
+
+        String json = "{\"name\" : \"" + name + "\"}";
+
+        String result = mediname.post(json);
+        Log.d("MEDIname", "result : " + result); //쿼리 결과값
+
+        int medi_search = 0;
+
+        JSONArray jsonArray = new JSONArray(result);
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("MEDIname", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else if (jsonArray.length() == 0) {
+            return 0;
+        } else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                medi_search = Integer.parseInt(jsonObject.getString("medi_search"));
+            }
+            return medi_search;
+        }
+
+        return 0;
+    }
+
+    private boolean searchadd(int num, String name) {
+
+        REST_API searchadd = new REST_API("searchadd");
+
+        String json = "{\"num\" : \"" + num + "\", \"name\" : \"" + name + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
+
+        String result = searchadd.post(json);
+//        Log.d("LOGIN", "result : " + result);
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("searchadd", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result == null || result.equals("")){
+            Log.d("searchadd", "FAIL!!!!!");
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return false;
+        } else if(result.equals("true\n")) {
+            Log.d("searchadd", "SUCCESS!!!!!");
+            return true;
+        }
+
+        return false;
+    }
+
+    private String noneload(String name) throws JSONException {
+
+        REST_API noneload = new REST_API("noneload");
+
+        String json = "{\"name\" : \"" + name + "\"}";
+
+        String result = noneload.post(json);
+        Log.d("noneload", "result : " + result); //쿼리 결과값
+
+        JSONArray jsonArray = new JSONArray(result);
+        String none_search = null;
+
+        Log.i("resultjson", String.valueOf(jsonArray.length()));
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("noneload", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return "timeout";
+        }
+        else if (jsonArray.length() == 0) {
+            return "-1";
+        }
+        else {
+            for(int i = 0 ; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                none_search = jsonObject.getString("none_search");
+            }
+            return none_search;
+        }
+    }
+
+    private boolean nonesearchadd(String name) throws JSONException {
+
+        REST_API nonesearchadd = new REST_API("nonesearchadd");
+
+        String json = "{\"name\" : \"" + name + "\"}";
+
+
+        String result = nonesearchadd.post(json);
+        Log.d("nonestoreadd", "result : " + result); //쿼리 결과값
+
+        if(result.equals("timeout")) {                                                         // 서버 연결 시간(5초) 초과시
+            Log.d("nonestoreadd", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return false;
+        } else if (result.equals("false")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean nonesearchup(int num, String name) throws JSONException {
+
+        REST_API nonesearchup = new REST_API("nonesearchup");
+
+        String json = "{\"num\" : \"" + num + "\", \"name\" : \"" + name + "\"}";
+
+        String result = nonesearchup.post(json);
+        Log.d("nonesearchup", "result : " + result); //쿼리 결과값
+
+        if(result.equals("timeout")) {                                                         // 서버 연결 시간(5초) 초과시
+            Log.d("nonesearchup", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+
+            SearchSelect.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(SearchSelect.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return false;
+        } else if (result.equals("false")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     String getXmlData(String word){
