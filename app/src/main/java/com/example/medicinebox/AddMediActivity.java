@@ -613,6 +613,9 @@ public class AddMediActivity extends AppCompatActivity {
                                 // 잠금 해제 신호 송신 - slot : slot
 
 
+                                ConnDevice connDevice = new ConnDevice(AddMediActivity.this);
+                                connDevice.openSlot(slot);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

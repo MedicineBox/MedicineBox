@@ -232,6 +232,10 @@ public class StoreActivity extends AppCompatActivity {
 
                                                             // 잠금 해제 신호 송신 - slot : Integer.parseInt(slot)
 
+                                                            int slotNum = Integer.parseInt(slot);
+                                                            ConnDevice connDevice = new ConnDevice(StoreActivity.this);
+                                                            connDevice.openSlot(slotNum);
+
 
                                                             if (takef == true && storagef == true) {
 
@@ -272,6 +276,16 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 잠금 해제 신호 송신 - slot : Integer.parseInt(slot)
+
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int slotNum = Integer.parseInt(slot);
+                        ConnDevice connDevice = new ConnDevice(StoreActivity.this);
+                        connDevice.openSlot(slotNum);
+                    }
+                });
+
 
                 Toast.makeText(getApplicationContext(), "잠금이 해제되었습니다.", Toast.LENGTH_SHORT).show();
             }

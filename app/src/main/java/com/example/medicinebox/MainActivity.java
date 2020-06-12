@@ -912,7 +912,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Toast.makeText(getApplicationContext(), "Device IP : " + device_ip, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "Device IP : " + device_ip, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -941,6 +941,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else { // 1~6번 칸이면
+            final int slot = slotNum;
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -949,6 +950,8 @@ public class MainActivity extends AppCompatActivity {
                     storagef = storagedelete(mediNum);
 
                     // 잠금해제 신호 송신 - slot : slotNum
+                    ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                    connDevice.openSlot(slot);
 
 
                     if (takef == true && storagef == true) {

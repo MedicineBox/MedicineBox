@@ -265,7 +265,7 @@ public class Device_auth extends Activity {
 
         try {
             while (true) {
-                if (num > 10) {
+                if (num > 90) {
                     break;
                 } else {
                     result = conn_server.get(param);

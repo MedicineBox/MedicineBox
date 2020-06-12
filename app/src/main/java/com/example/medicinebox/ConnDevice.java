@@ -1,7 +1,6 @@
 package com.example.medicinebox;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ public class ConnDevice {
     private final static String TAG = ConnDevice.class.getSimpleName();
 
 //    final static String base_url = "http://ec2-3-34-54-94.ap-northeast-2.compute.amazonaws.com:65004/";
-    String device_id = null;
+    String device_ip = null;
     String base_url = null;
     String string_url;
     URL url = null;
@@ -29,14 +28,14 @@ public class ConnDevice {
 
 
     public ConnDevice(Context context) {
-        device_id = Session.getDeviceIP(context);
-        base_url = "http://" + device_id + ":60002/";
+        device_ip = Session.getDeviceIP(context);
+        base_url = "http://" + device_ip + ":60002/";
     }
 
 
     public ConnDevice(Context context, String param) {
-        device_id = Session.getDeviceIP(context);
-        base_url = "http://" + device_id + ":60002/";
+        device_ip = Session.getDeviceIP(context);
+        base_url = "http://" + device_ip + ":60002/";
         string_url = base_url + param;
 
 
@@ -323,40 +322,6 @@ public class ConnDevice {
         return null;
     }
 
-    public class Dosing implements Runnable {
-        private int slot;
-        private String json;
-        private String url = base_url + "/dosing";
-        private String result;
-
-        public Dosing(int slot) {
-            this.slot = slot;
-            json = "{ \"slot\" : \"" + slot + "\" }";
-        }
-
-        @Override
-        public void run() {
-            String result = post(json);
-            result.trim();
-            setResult(result);
-        }
-
-        public void setResult(String result) {
-            this.result = result;
-        }
-
-        public boolean getResult() {
-
-            if(result.equals("true")) {
-                Log.e(TAG, "dosing " + slot + " SUCCESS");
-                return true;
-            } else {
-                Log.e(TAG, "dosing " + slot + " FAIL");
-                Log.e(TAG, "dosing" + slot + " : " + result);
-                return false;
-            }
-        }
-    }
 //  복용
     public boolean dosing(int slot) {
         String json = "{ \"slot\" : \"" + slot + "\" }";
@@ -413,6 +378,25 @@ public class ConnDevice {
             return false;
         }
 
+    }
+
+
+//    투입구 열기
+    public boolean openSlot(int slot) {
+        string_url = base_url + "/open/" + slot;
+
+
+        String result = get();
+        result = result.trim();
+
+        if(result.equals("true")) {
+            Log.e(TAG, "Open Slot "+ slot + "SUCCESS");
+            return true;
+        } else {
+            Log.e(TAG, "Open Slot " + slot + " FAIL");
+            Log.e(TAG, "Open Slot " + slot + " Fail caused by : " + result);
+            return false;
+        }
     }
 
 }
