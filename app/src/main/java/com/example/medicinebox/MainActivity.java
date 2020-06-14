@@ -720,7 +720,7 @@ public class MainActivity extends AppCompatActivity {
                                             connDevice.dosing(1);
                                         } catch (NullPointerException n) {
                                             n.printStackTrace();
-                                            Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                            showToast("디바이스와 동일한 네트워크에 연결해 주세요");
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -750,7 +750,8 @@ public class MainActivity extends AppCompatActivity {
                                                     connDevice.dosing(2);
                                                 } catch (NullPointerException n) {
                                                     n.printStackTrace();
-                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                                    showToast("디바이스와 동일한 네트워크에 연결해 주세요");
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -780,7 +781,8 @@ public class MainActivity extends AppCompatActivity {
                                                     connDevice.dosing(3);
                                                 } catch (NullPointerException n) {
                                                     n.printStackTrace();
-                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                                    showToast("디바이스와 동일한 네트워크에 연결해 주세요");
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -1720,6 +1722,15 @@ public class MainActivity extends AppCompatActivity {
             //알람 예약
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         }
+    }
+
+    public void showToast(final String msg) {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

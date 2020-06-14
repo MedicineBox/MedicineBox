@@ -29,7 +29,7 @@ public class ConnDevice {
 
     public ConnDevice(Context context) {
         device_ip = Session.getDeviceIP(context);
-        base_url = "http://" + device_ip + ":60002/";
+        base_url = "http://" + device_ip + ":60002";
     }
 
 
