@@ -49,8 +49,8 @@ public class AddMediActivity extends AppCompatActivity {
     int i=0, j=0;
 
     ImageView btnBack;
-    LinearLayout layoutDay, layoutCycle, layoutType, layoutTake, lAddTime1, lAddTime2, lAddTime3, lAddTime4, lAddTime5;
-    Button btnMediAdd, btnDay, btnCycle, btnStartdate, btnDaySun, btnDayMon, btnDayTue, btnDayWed, btnDayThu, btnDayFri, btnDaySat, btnAddTime1, btnAddTime2, btnAddTime3, btnAddTime4, btnAddTime5, btnExpiredate;
+    LinearLayout layoutDay, layoutCycle, layoutType, layoutTake, lAddTime1, lAddTime2, lAddTime3;
+    Button btnMediAdd, btnDay, btnCycle, btnStartdate, btnDaySun, btnDayMon, btnDayTue, btnDayWed, btnDayThu, btnDayFri, btnDaySat, btnAddTime1, btnAddTime2, btnAddTime3, btnExpiredate;
     //Toolbar toolbar;
     Spinner spinSlot, spinCycle, spinPerDay;
 
@@ -95,13 +95,9 @@ public class AddMediActivity extends AppCompatActivity {
         lAddTime1 = findViewById(R.id.layoutAddTime1);
         lAddTime2 = findViewById(R.id.layoutAddTime2);
         lAddTime3 = findViewById(R.id.layoutAddTime3);
-        lAddTime4 = findViewById(R.id.layoutAddTime4);
-        lAddTime5 = findViewById(R.id.layoutAddTime5);
         btnAddTime1 = findViewById(R.id.btnAddTime1);
         btnAddTime2 = findViewById(R.id.btnAddTime2);
         btnAddTime3 = findViewById(R.id.btnAddTime3);
-        btnAddTime4 = findViewById(R.id.btnAddTime4);
-        btnAddTime5 = findViewById(R.id.btnAddTime5);
 
         //toolbar = findViewById(R.id.toolbar_addMedicine);
         layoutDay = findViewById(R.id.layoutAddDay);
@@ -390,36 +386,16 @@ public class AddMediActivity extends AppCompatActivity {
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.GONE);
                         lAddTime3.setVisibility(View.GONE);
-                        lAddTime4.setVisibility(View.GONE);
-                        lAddTime5.setVisibility(View.GONE);
                         break;
                     case 1:
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.VISIBLE);
                         lAddTime3.setVisibility(View.GONE);
-                        lAddTime4.setVisibility(View.GONE);
-                        lAddTime5.setVisibility(View.GONE);
                         break;
                     case 2:
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.VISIBLE);
                         lAddTime3.setVisibility(View.VISIBLE);
-                        lAddTime4.setVisibility(View.GONE);
-                        lAddTime5.setVisibility(View.GONE);
-                        break;
-                    case 3:
-                        lAddTime1.setVisibility(View.VISIBLE);
-                        lAddTime2.setVisibility(View.VISIBLE);
-                        lAddTime3.setVisibility(View.VISIBLE);
-                        lAddTime4.setVisibility(View.VISIBLE);
-                        lAddTime5.setVisibility(View.GONE);
-                        break;
-                    case 4:
-                        lAddTime1.setVisibility(View.VISIBLE);
-                        lAddTime2.setVisibility(View.VISIBLE);
-                        lAddTime3.setVisibility(View.VISIBLE);
-                        lAddTime4.setVisibility(View.VISIBLE);
-                        lAddTime5.setVisibility(View.VISIBLE);
                         break;
                     default:
                         break;
@@ -448,18 +424,6 @@ public class AddMediActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectTime(btnAddTime3);
-            }
-        });
-        btnAddTime4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTime(btnAddTime4);
-            }
-        });
-        btnAddTime5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTime(btnAddTime5);
             }
         });
 
@@ -516,26 +480,6 @@ public class AddMediActivity extends AppCompatActivity {
                         timeArray.add(time1);
                         timeArray.add(time2);
                         timeArray.add(time3);
-                    } else if (fre == 4) {
-                        time1 = editTime((String) btnAddTime1.getText());
-                        time2 = editTime((String) btnAddTime2.getText());
-                        time3 = editTime((String) btnAddTime3.getText());
-                        time4 = editTime((String) btnAddTime4.getText());
-                        timeArray.add(time1);
-                        timeArray.add(time2);
-                        timeArray.add(time3);
-                        timeArray.add(time4);
-                    } else if (fre == 5) {
-                        time1 = editTime((String) btnAddTime1.getText());
-                        time2 = editTime((String) btnAddTime2.getText());
-                        time3 = editTime((String) btnAddTime3.getText());
-                        time4 = editTime((String) btnAddTime4.getText());
-                        time5 = editTime((String) btnAddTime5.getText());
-                        timeArray.add(time1);
-                        timeArray.add(time2);
-                        timeArray.add(time3);
-                        timeArray.add(time4);
-                        timeArray.add(time5);
                     }
                     AsyncTask.execute(new Runnable() {
                         @Override

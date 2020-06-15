@@ -48,7 +48,7 @@ public class StoreActivity extends AppCompatActivity {
     TextView mediName, mediSlot, mediEffect, mediUse;
     ImageView mediPhoto;
 
-    TextView takeType, textDay, takeDay, textStart, takeStart, textCycle, takeCycle, takeFre, takeTime1, takeTime2, takeTime3, takeTime4, takeTime5, takeExpire, storageNum;
+    TextView takeType, textDay, takeDay, textStart, takeStart, textCycle, takeCycle, takeFre, takeTime1, takeTime2, takeTime3, takeExpire, storageNum;
     LinearLayout Takelayout, Timelayout;
 
     FloatingActionButton btnPilladd;
@@ -87,8 +87,6 @@ public class StoreActivity extends AppCompatActivity {
         takeTime1 = findViewById(R.id.takeTime1);
         takeTime2 = findViewById(R.id.takeTime2);
         takeTime3 = findViewById(R.id.takeTime3);
-        takeTime4 = findViewById(R.id.takeTime4);
-        takeTime5 = findViewById(R.id.takeTime5);
         takeExpire = findViewById(R.id.takeExpire);
         storageNum = findViewById(R.id.storageNum);
 
@@ -197,8 +195,6 @@ public class StoreActivity extends AppCompatActivity {
                                 intent.putExtra("time1", takeTime1.getText().toString());
                                 intent.putExtra("time2", takeTime2.getText().toString());
                                 intent.putExtra("time3", takeTime3.getText().toString());
-                                intent.putExtra("time4", takeTime4.getText().toString());
-                                intent.putExtra("time5", takeTime5.getText().toString());
                                 startActivity(intent);
                                 break;
                             case R.id.store_delete:
@@ -567,26 +563,6 @@ public class StoreActivity extends AppCompatActivity {
                 takeTime1.setText(timeArray.get(0));
                 takeTime2.setText(timeArray.get(1));
                 takeTime3.setText(timeArray.get(2));
-            } else if (timeArray.size() == 4) {
-                takeTime2.setVisibility(View.VISIBLE);
-                takeTime3.setVisibility(View.VISIBLE);
-                takeTime4.setVisibility(View.VISIBLE);
-
-                takeTime1.setText(timeArray.get(0));
-                takeTime2.setText(timeArray.get(1));
-                takeTime3.setText(timeArray.get(2));
-                takeTime4.setText(timeArray.get(3));
-            } else if (timeArray.size() == 5) {
-                takeTime2.setVisibility(View.VISIBLE);
-                takeTime3.setVisibility(View.VISIBLE);
-                takeTime4.setVisibility(View.VISIBLE);
-                takeTime5.setVisibility(View.VISIBLE);
-
-                takeTime1.setText(timeArray.get(0));
-                takeTime2.setText(timeArray.get(1));
-                takeTime3.setText(timeArray.get(2));
-                takeTime4.setText(timeArray.get(3));
-                takeTime5.setText(timeArray.get(4));
             }
             return true;
         }

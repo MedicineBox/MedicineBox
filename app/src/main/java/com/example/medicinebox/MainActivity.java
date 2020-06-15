@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mediNum1, mediNum2, mediNum3, mediNum4, mediNum5, mediNum6, mediNum7;
     TextView mediName1, mediName2, mediName3, mediName4, mediName5, mediName6, mediName7;
     TextView todayChk1, todayChk2, todayChk3, todayChk4, todayChk5, todayChk6, todayChk7;
-    TextView time1_1, time1_2, time1_3, time2_1, time2_2, time2_3, time3_1, time3_2, time3_3;
+    TextView time1_1, time1_2, time1_3, time2_1, time2_2, time2_3, time3_1, time3_2, time3_3, time4_1, time4_2, time4_3, time5_1, time5_2, time5_3, time6_1, time6_2, time6_3;
     ImageView mediPhoto1, mediPhoto2, mediPhoto3, mediPhoto4, mediPhoto5, mediPhoto6, mediPhoto7;
     FloatingActionButton btnAddmedi;
     ImageView btnSetting, btnSearch, btnTake, btnTrash;
@@ -144,6 +144,18 @@ public class MainActivity extends AppCompatActivity {
         time3_1 = findViewById(R.id.time3_1);
         time3_2 = findViewById(R.id.time3_2);
         time3_3 = findViewById(R.id.time3_3);
+
+        time4_1 = findViewById(R.id.time4_1);
+        time4_2 = findViewById(R.id.time4_2);
+        time4_3 = findViewById(R.id.time4_3);
+
+        time5_1 = findViewById(R.id.time5_1);
+        time5_2 = findViewById(R.id.time5_2);
+        time5_3 = findViewById(R.id.time5_3);
+
+        time6_1 = findViewById(R.id.time6_1);
+        time6_2 = findViewById(R.id.time6_2);
+        time6_3 = findViewById(R.id.time6_3);
 
 
         btnAddmedi = findViewById(R.id.btnAddmedi);
@@ -359,10 +371,13 @@ public class MainActivity extends AppCompatActivity {
                             todaytake3(id, num3);
                         } else if (takeloadArray.get(i).equals(num4)) {
                             todayChk4.setText("V");
+                            todaytake4(id, num4);
                         } else if (takeloadArray.get(i).equals(num5)) {
                             todayChk5.setText("V");
+                            todaytake5(id, num5);
                         } else if (takeloadArray.get(i).equals(num6)) {
                             todayChk6.setText("V");
+                            todaytake6(id, num6);
                         }
                     }
                     for (i=0; i < cycleloadArray.size(); i++) {
@@ -377,10 +392,13 @@ public class MainActivity extends AppCompatActivity {
                             todaytake3(id, num3);
                         } else if (cycleloadArray.get(i).equals(num4)) {
                             todayChk4.setText("V");
+                            todaytake4(id, num4);
                         } else if (cycleloadArray.get(i).equals(num5)) {
                             todayChk5.setText("V");
+                            todaytake5(id, num5);
                         } else if (cycleloadArray.get(i).equals(num6)) {
                             todayChk6.setText("V");
+                            todaytake6(id, num6);
                         }
                     }
 
@@ -692,6 +710,15 @@ public class MainActivity extends AppCompatActivity {
                 String take3_1 = time3_1.getText().toString();
                 String take3_2 = time3_2.getText().toString();
                 String take3_3 = time3_3.getText().toString();
+                String take4_1 = time4_1.getText().toString();
+                String take4_2 = time4_2.getText().toString();
+                String take4_3 = time4_3.getText().toString();
+                String take5_1 = time5_1.getText().toString();
+                String take5_2 = time5_2.getText().toString();
+                String take5_3 = time5_3.getText().toString();
+                String take6_1 = time6_1.getText().toString();
+                String take6_2 = time6_2.getText().toString();
+                String take6_3 = time6_3.getText().toString();
                 try {
                     boolean diff1_1 = diffTime(ctime, take1_1);
                     boolean diff1_2 = diffTime(ctime, take1_2);
@@ -702,6 +729,15 @@ public class MainActivity extends AppCompatActivity {
                     boolean diff3_1 = diffTime(ctime, take3_1);
                     boolean diff3_2 = diffTime(ctime, take3_2);
                     boolean diff3_3 = diffTime(ctime, take3_3);
+                    boolean diff4_1 = diffTime(ctime, take4_1);
+                    boolean diff4_2 = diffTime(ctime, take4_2);
+                    boolean diff4_3 = diffTime(ctime, take4_3);
+                    boolean diff5_1 = diffTime(ctime, take5_1);
+                    boolean diff5_2 = diffTime(ctime, take5_2);
+                    boolean diff5_3 = diffTime(ctime, take5_3);
+                    boolean diff6_1 = diffTime(ctime, take6_1);
+                    boolean diff6_2 = diffTime(ctime, take6_2);
+                    boolean diff6_3 = diffTime(ctime, take6_3);
 
                     if (diff1_1 == true | diff1_2 == true | diff1_3 == true) { // 복용할 약 있는 경우
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -783,6 +819,93 @@ public class MainActivity extends AppCompatActivity {
                                                     n.printStackTrace();
 //                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
                                                     showToast("디바이스와 동일한 네트워크에 연결해 주세요");
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
+                    } else if (diff4_1 == true | diff4_2 == true | diff4_3 == true) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("복용 하시겠습니까?")
+                                .setMessage(mediName4.getText())
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                        // slot 3 복용 신호 송신
+                                        AsyncTask.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                                                try {
+                                                    Log.d(TAG, "slot 4 dosing run()");
+                                                    connDevice.dosing(4);
+                                                } catch (NullPointerException n) {
+                                                    n.printStackTrace();
+                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
+                    } else if (diff5_1 == true | diff5_2 == true | diff5_3 == true) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("복용 하시겠습니까?")
+                                .setMessage(mediName5.getText())
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                        // slot 3 복용 신호 송신
+                                        AsyncTask.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                                                try {
+                                                    Log.d(TAG, "slot 5 dosing run()");
+                                                    connDevice.dosing(5);
+                                                } catch (NullPointerException n) {
+                                                    n.printStackTrace();
+                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                    }
+                                })
+                                .show();
+                    } else if (diff6_1 == true | diff6_2 == true | diff6_3 == true) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("복용 하시겠습니까?")
+                                .setMessage(mediName6.getText())
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which){
+                                        // slot 3 복용 신호 송신
+                                        AsyncTask.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ConnDevice connDevice = new ConnDevice(MainActivity.this);
+                                                try {
+                                                    Log.d(TAG, "slot 6 dosing run()");
+                                                    connDevice.dosing(6);
+                                                } catch (NullPointerException n) {
+                                                    n.printStackTrace();
+                                                    Toast.makeText(MainActivity.this, "디바이스와 동일한 네트워크에 연결해 주세요", Toast.LENGTH_SHORT).show();
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -1319,11 +1442,11 @@ public class MainActivity extends AppCompatActivity {
 
     // slot 1 복용 시간
     private boolean todaytake1(String id, String num) throws JSONException {
-        REST_API todaytake1 = new REST_API("todaytake1");
+        REST_API todaytake = new REST_API("todaytake");
 
         String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
 
-        String result = todaytake1.post(json);
+        String result = todaytake.post(json);
         Log.d("todaytake1", "result : " + result); //쿼리 결과값
 
         JSONArray jsonArray = new JSONArray(result);
@@ -1375,11 +1498,11 @@ public class MainActivity extends AppCompatActivity {
 
     // slot 2 복용 시간
     private boolean todaytake2(String id, String num) throws JSONException {
-        REST_API todaytake2 = new REST_API("todaytake2");
+        REST_API todaytake = new REST_API("todaytake");
 
         String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
 
-        String result = todaytake2.post(json);
+        String result = todaytake.post(json);
         JSONArray jsonArray = new JSONArray(result);
         Log.d("todaytake2", "result : " + result); //쿼리 결과값
 
@@ -1429,11 +1552,11 @@ public class MainActivity extends AppCompatActivity {
 
     // slot 3 복용 시간
     private boolean todaytake3(String id, String num) throws JSONException {
-        REST_API todaytake3 = new REST_API("todaytake3");
+        REST_API todaytake = new REST_API("todaytake");
 
         String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
 
-        String result = todaytake3.post(json);
+        String result = todaytake.post(json);
         Log.d("todaytake3", "result : " + result); //쿼리 결과값
         JSONArray jsonArray = new JSONArray(result);
 
@@ -1476,6 +1599,168 @@ public class MainActivity extends AppCompatActivity {
             });
         } else if(result.equals("true\n")) {
             Log.d("todaytake3", "SUCCESS!!!!!");
+            return true;
+        }
+        return true;
+    }
+
+    // slot 4 복용 시간
+    private boolean todaytake4(String id, String num) throws JSONException {
+        REST_API todaytake = new REST_API("todaytake");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
+
+        String result = todaytake.post(json);
+        Log.d("todaytake4", "result : " + result); //쿼리 결과값
+        JSONArray jsonArray = new JSONArray(result);
+
+        ArrayList<String> timeArray = new ArrayList<>();
+
+        for(int i = 0 ; i<jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String take_time = jsonObject.getString("take_time");
+            timeArray.add(take_time);
+        }
+        Log.d("timeArray4", String.valueOf(timeArray.size()));
+
+        if (timeArray.size() == 0) {
+            return true;
+        } else if (timeArray.size() == 1) {
+            time4_1.setText(timeArray.get(0));
+
+            return true;
+        } else if (timeArray.size() == 2) {
+            time4_1.setText(timeArray.get(0));
+            time4_2.setText(timeArray.get(1));
+
+            return true;
+        } else if (timeArray.size() == 3) {
+            time4_1.setText(timeArray.get(0));
+            time4_2.setText(timeArray.get(1));
+            time4_3.setText(timeArray.get(2));
+
+            return true;
+        }
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("todaytake4", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result.equals("true\n")) {
+            Log.d("todaytake4", "SUCCESS!!!!!");
+            return true;
+        }
+        return true;
+    }
+
+    // slot 5 복용 시간
+    private boolean todaytake5(String id, String num) throws JSONException {
+        REST_API todaytake = new REST_API("todaytake");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
+
+        String result = todaytake.post(json);
+        Log.d("todaytake5", "result : " + result); //쿼리 결과값
+        JSONArray jsonArray = new JSONArray(result);
+
+        ArrayList<String> timeArray = new ArrayList<>();
+
+        for(int i = 0 ; i<jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String take_time = jsonObject.getString("take_time");
+            timeArray.add(take_time);
+        }
+        Log.d("timeArray5", String.valueOf(timeArray.size()));
+
+        if (timeArray.size() == 0) {
+            return true;
+        } else if (timeArray.size() == 1) {
+            time5_1.setText(timeArray.get(0));
+
+            return true;
+        } else if (timeArray.size() == 2) {
+            time5_1.setText(timeArray.get(0));
+            time5_2.setText(timeArray.get(1));
+
+            return true;
+        } else if (timeArray.size() == 3) {
+            time5_1.setText(timeArray.get(0));
+            time5_2.setText(timeArray.get(1));
+            time5_3.setText(timeArray.get(2));
+
+            return true;
+        }
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("todaytake5", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result.equals("true\n")) {
+            Log.d("todaytake5", "SUCCESS!!!!!");
+            return true;
+        }
+        return true;
+    }
+
+    // slot 6 복용 시간
+    private boolean todaytake6(String id, String num) throws JSONException {
+        REST_API todaytake = new REST_API("todaytake");
+
+        String json = "{\"id\" : \"" + id + "\", \"num\" : \"" + num + "\"}";               // json에서 변수명도 큰따옴표로 감싸야함.
+
+        String result = todaytake.post(json);
+        Log.d("todaytake6", "result : " + result); //쿼리 결과값
+        JSONArray jsonArray = new JSONArray(result);
+
+        ArrayList<String> timeArray = new ArrayList<>();
+
+        for(int i = 0 ; i<jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String take_time = jsonObject.getString("take_time");
+            timeArray.add(take_time);
+        }
+        Log.d("timeArray6", String.valueOf(timeArray.size()));
+
+        if (timeArray.size() == 0) {
+            return true;
+        } else if (timeArray.size() == 1) {
+            time6_1.setText(timeArray.get(0));
+
+            return true;
+        } else if (timeArray.size() == 2) {
+            time6_1.setText(timeArray.get(0));
+            time6_2.setText(timeArray.get(1));
+
+            return true;
+        } else if (timeArray.size() == 3) {
+            time6_1.setText(timeArray.get(0));
+            time6_2.setText(timeArray.get(1));
+            time6_3.setText(timeArray.get(2));
+
+            return true;
+        }
+
+        if(result.equals("timeout")) {                                                          // 서버 연결 시간(5초) 초과시
+            Log.d("todaytake6", "TIMEOUT!!!!!");
+//            토스트를 띄우고 싶은데 메인쓰레드에 접근할수 없다고 함. 그래서 이런식으로 쓰레드에 접근.
+            MainActivity.this.runOnUiThread(new Runnable() {                                       // UI 쓰레드에서 실행
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "서버 연결 시간 초과", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if(result.equals("true\n")) {
+            Log.d("todaytake6", "SUCCESS!!!!!");
             return true;
         }
         return true;

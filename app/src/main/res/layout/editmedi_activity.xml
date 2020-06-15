@@ -443,64 +443,6 @@
                             android:textSize="20sp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/layoutAddTime4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="복용 시간 4"
-                            android:textColor="#000"
-                            android:textSize="20sp" />
-
-                        <Button
-                            android:id="@+id/btnAddTime4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/button"
-                            android:gravity="center|start"
-                            android:paddingLeft="20sp"
-                            android:text="AM 08 : 00"
-                            android:textColor="#000"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layoutAddTime5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="복용 시간 5"
-                            android:textColor="#000"
-                            android:textSize="20sp" />
-
-                        <Button
-                            android:id="@+id/btnAddTime5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/button"
-                            android:gravity="center|start"
-                            android:paddingLeft="20sp"
-                            android:text="AM 08 : 00"
-                            android:textColor="#000"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-
                 </LinearLayout>
 
                 <TextView

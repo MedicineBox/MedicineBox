@@ -44,9 +44,9 @@ public class EditMediActivity extends AppCompatActivity {
     int editcycle = 0, editfre = 0;
 
     ImageView btnBack;
-    LinearLayout layoutDay, layoutCycle, layoutType, layoutTake, lAddTime1, lAddTime2, lAddTime3, lAddTime4, lAddTime5;
+    LinearLayout layoutDay, layoutCycle, layoutType, layoutTake, lAddTime1, lAddTime2, lAddTime3;
     Button btnMediAdd, btnDay, btnCycle, btnStartdate, btnDaySun, btnDayMon, btnDayTue, btnDayWed, btnDayThu, btnDayFri, btnDaySat
-            , btnAddTime1, btnAddTime2, btnAddTime3, btnAddTime4, btnAddTime5, btnExpiredate;
+            , btnAddTime1, btnAddTime2, btnAddTime3, btnExpiredate;
     Spinner spinCycle, spinPerDay;
 
     TextView slotNum, mediName, takeType;
@@ -77,13 +77,9 @@ public class EditMediActivity extends AppCompatActivity {
         lAddTime1 = findViewById(R.id.layoutAddTime1);
         lAddTime2 = findViewById(R.id.layoutAddTime2);
         lAddTime3 = findViewById(R.id.layoutAddTime3);
-        lAddTime4 = findViewById(R.id.layoutAddTime4);
-        lAddTime5 = findViewById(R.id.layoutAddTime5);
         btnAddTime1 = findViewById(R.id.btnAddTime1);
         btnAddTime2 = findViewById(R.id.btnAddTime2);
         btnAddTime3 = findViewById(R.id.btnAddTime3);
-        btnAddTime4 = findViewById(R.id.btnAddTime4);
-        btnAddTime5 = findViewById(R.id.btnAddTime5);
 
         layoutDay = findViewById(R.id.layoutAddDay);
         layoutCycle = findViewById(R.id.layoutAddCycle);
@@ -120,14 +116,10 @@ public class EditMediActivity extends AppCompatActivity {
         String time1 = intent.getExtras().getString("time1");
         String time2 = intent.getExtras().getString("time2");
         String time3 = intent.getExtras().getString("time3");
-        String time4 = intent.getExtras().getString("time4");
-        String time5 = intent.getExtras().getString("time5");
 
         btnAddTime1.setText(splitTime(time1));
         btnAddTime2.setText(splitTime(time2));
         btnAddTime3.setText(splitTime(time3));
-        btnAddTime4.setText(splitTime(time4));
-        btnAddTime5.setText(splitTime(time5));
 
 
         exy = Integer.parseInt(expire.substring(0,4));
@@ -214,10 +206,6 @@ public class EditMediActivity extends AppCompatActivity {
             spinPerDay.setSelection(1);
         } else if (fre.equals("3번")) {
             spinPerDay.setSelection(2);
-        } else if (fre.equals("4번")) {
-            spinPerDay.setSelection(3);
-        } else if (fre.equals("5번")) {
-            spinPerDay.setSelection(4);
         }
 
 
@@ -399,36 +387,16 @@ public class EditMediActivity extends AppCompatActivity {
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.GONE);
                         lAddTime3.setVisibility(View.GONE);
-                        lAddTime4.setVisibility(View.GONE);
-                        lAddTime5.setVisibility(View.GONE);
                         break;
                     case 1:
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.VISIBLE);
                         lAddTime3.setVisibility(View.GONE);
-                        lAddTime4.setVisibility(View.GONE);
-                        lAddTime5.setVisibility(View.GONE);
                         break;
                     case 2:
                         lAddTime1.setVisibility(View.VISIBLE);
                         lAddTime2.setVisibility(View.VISIBLE);
                         lAddTime3.setVisibility(View.VISIBLE);
-                        lAddTime4.setVisibility(View.GONE);
-                        lAddTime5.setVisibility(View.GONE);
-                        break;
-                    case 3:
-                        lAddTime1.setVisibility(View.VISIBLE);
-                        lAddTime2.setVisibility(View.VISIBLE);
-                        lAddTime3.setVisibility(View.VISIBLE);
-                        lAddTime4.setVisibility(View.VISIBLE);
-                        lAddTime5.setVisibility(View.GONE);
-                        break;
-                    case 4:
-                        lAddTime1.setVisibility(View.VISIBLE);
-                        lAddTime2.setVisibility(View.VISIBLE);
-                        lAddTime3.setVisibility(View.VISIBLE);
-                        lAddTime4.setVisibility(View.VISIBLE);
-                        lAddTime5.setVisibility(View.VISIBLE);
                         break;
                     default:
                         break;
@@ -456,18 +424,6 @@ public class EditMediActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectTime(btnAddTime3);
-            }
-        });
-        btnAddTime4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTime(btnAddTime4);
-            }
-        });
-        btnAddTime5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTime(btnAddTime5);
             }
         });
 
@@ -530,26 +486,6 @@ public class EditMediActivity extends AppCompatActivity {
                     timeArray.add(edittime1);
                     timeArray.add(edittime2);
                     timeArray.add(edittime3);
-                } else if (editfre == 4) {
-                    edittime1 = editTime((String) btnAddTime1.getText());
-                    edittime2 = editTime((String) btnAddTime2.getText());
-                    edittime3 = editTime((String) btnAddTime3.getText());
-                    edittime4 = editTime((String) btnAddTime4.getText());
-                    timeArray.add(edittime1);
-                    timeArray.add(edittime2);
-                    timeArray.add(edittime3);
-                    timeArray.add(edittime4);
-                } else if (editfre == 5) {
-                    edittime1 = editTime((String) btnAddTime1.getText());
-                    edittime2 = editTime((String) btnAddTime2.getText());
-                    edittime3 = editTime((String) btnAddTime3.getText());
-                    edittime4 = editTime((String) btnAddTime4.getText());
-                    edittime5 = editTime((String) btnAddTime5.getText());
-                    timeArray.add(edittime1);
-                    timeArray.add(edittime2);
-                    timeArray.add(edittime3);
-                    timeArray.add(edittime4);
-                    timeArray.add(edittime5);
                 }
 
                 AsyncTask.execute(new Runnable() {
