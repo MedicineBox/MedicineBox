@@ -12,6 +12,7 @@
 * 사용기한이 지난 의약품을 수시로 버릴 수 있으며 의약품 별로 의약품 정보와 복용 정보를 관리할 수 있습니다.
 * 보관 중인 의약품이 아니더라도 원하는 의약품의 정보를 검색할 수 있습니다.
 
+
 로그인 화면 > ![login](https://user-images.githubusercontent.com/62014520/102003815-11c81200-3d4e-11eb-8cfc-558289b42fe3.png) ![deviceconn](https://user-images.githubusercontent.com/62014520/102003820-1c82a700-3d4e-11eb-91b3-2baf59d0438d.png) < 디바이스 인증 화면
 
 메인 화면 > ![main](https://user-images.githubusercontent.com/62014520/102003794-007f0580-3d4e-11eb-8e07-e847f48313f7.png) ![infomedi2](https://user-images.githubusercontent.com/62014520/102003854-71262200-3d4e-11eb-99c0-eba754cd23a5.png) < 보관 의약품 정보 화면
